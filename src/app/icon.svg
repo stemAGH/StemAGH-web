@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- StemAGH mark on the corporate indigo. Same paths as src/components/logo-mark.tsx. -->
+  <rect width="32" height="32" rx="7" fill="#3f3fb8"/>
+  <g fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M16 27V16"/>
+    <path d="M16 16 8 7"/>
+    <path d="M16 16 24 7"/>
+  </g>
+</svg>

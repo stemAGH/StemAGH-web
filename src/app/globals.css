@@ -1,0 +1,87 @@
+@import 'tailwindcss';
+
+/*
+ * StemAGH design tokens. Each token is a CSS custom property so it can be
+ * read from plain CSS too; @theme exposes them as Tailwind utilities
+ * (bg-surface, text-ink, border-line, bg-accent, max-w-page, ...).
+ * Products bring their own palette later; this one is the corporate frame.
+ */
+@theme {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  /* System monospace: Geist Mono would add a 70 KB font to every page for a few labels. */
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Surfaces */
+  --color-canvas: #fbfbfc;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f3f4f7;
+
+  /* Text. ink on canvas ~17:1, ink-muted ~7:1, both pass AA/AAA. */
+  --color-ink: #14161c;
+  --color-ink-muted: #4b5262;
+
+  /* Borders */
+  --color-line: #e2e4ea;
+  --color-line-strong: #c4c8d2;
+
+  /* Accent: indigo. accent on white ~8:1; accent-contrast on accent ~8:1. */
+  --color-accent: #3f3fb8;
+  --color-accent-hover: #323296;
+  --color-accent-soft: #eceefb;
+  --color-accent-contrast: #ffffff;
+
+  /* Product accent. Defaults to the corporate accent; a product's pages override it inline. */
+  --color-product: var(--color-accent);
+
+  /* Shape and layout */
+  --radius-control: 0.5rem;
+  --radius-card: 0.875rem;
+  --container-page: 72rem;
+  --spacing-gutter: 1.25rem;
+}
+
+:root {
+  --focus-ring: 2px solid var(--color-accent);
+  --focus-offset: 3px;
+  color-scheme: light;
+}
+
+html {
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* One focus style for every interactive element, keyboard users only. */
+:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--radius-control);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Faint ruled grid for the hero. Decorative only; fades out toward the edges. */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 80% at 70% 30%, #000 0%, transparent 75%);
+}
