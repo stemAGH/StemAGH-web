@@ -12,6 +12,12 @@ export type DeliveryModel = 'open-source' | 'self-hosted' | 'saas' | 'commercial
 
 export type Capability = { title: string; summary: string; items: string[] };
 
+export type TechStackItem = { name: string; role: string };
+
+export type WorkflowStep = { step: string; title: string; description: string };
+
+export type FaqItem = { question: string; answer: string };
+
 export type Product = {
   slug: string;
   name: string;
@@ -34,6 +40,12 @@ export type Product = {
   deployment?: { paragraphs: string[]; commandCaption: string; command: string };
   /** Documented gaps only. Remove an entry when the product docs say it is fixed. */
   limitations: string[];
+  /** Technologies and tools that power this product. */
+  techStack?: TechStackItem[];
+  /** Step-by-step workflow walkthrough for the product page. */
+  workflow?: WorkflowStep[];
+  /** Frequently asked questions shown on the product page. */
+  faq?: FaqItem[];
   links: {
     repo?: string;
     docs?: string;
@@ -189,6 +201,84 @@ sudo ./install-native.sh \\
       'Interest on delayed payments is calculated by the system, but it cannot yet be switched on for a booking from the app, so no interest is charged.',
       'A custom field can be defined on a unit but there is no screen to fill it in.',
       'The audit log is incomplete: updates record new values only, and some bulk changes are not recorded.',
+    ],
+    techStack: [
+      { name: 'Node.js', role: 'Runtime' },
+      { name: 'Express', role: 'API server' },
+      { name: 'PostgreSQL', role: 'Database' },
+      { name: 'Redis', role: 'Caching and queues' },
+      { name: 'React', role: 'Frontend UI' },
+      { name: 'nginx', role: 'Reverse proxy and TLS' },
+    ],
+    workflow: [
+      {
+        step: '01',
+        title: 'Capture the inquiry',
+        description:
+          'Leads arrive from walk-ins, calls, your website or property portals and are de-duplicated automatically.',
+      },
+      {
+        step: '02',
+        title: 'Qualify and assign',
+        description:
+          'Assign leads round-robin or manually. Managers see their team; the pipeline view tracks every stage change.',
+      },
+      {
+        step: '03',
+        title: 'Show inventory and book',
+        description:
+          'Browse available units or plots, generate a cost breakup, and complete the booking with a payment plan.',
+      },
+      {
+        step: '04',
+        title: 'Collect and reconcile',
+        description:
+          'Record receipts against the installment schedule. GST splits, TDS and cheque bounces are handled in the ledger.',
+      },
+      {
+        step: '05',
+        title: 'Settle commissions',
+        description:
+          'Broker commissions accrue on booking or collection, with TDS and clawback on cancellation built in.',
+      },
+      {
+        step: '06',
+        title: 'Self-serve portals',
+        description:
+          'Customers check their schedule and raise tickets; brokers see live availability and their commission position.',
+      },
+    ],
+    faq: [
+      {
+        question: 'Is OpenEstate free?',
+        answer:
+          'Yes. OpenEstate is licensed under AGPL-3.0, which means you can download, install and use it without paying a licence fee. If you modify the source and offer it as a network service, you must share your changes under the same terms.',
+      },
+      {
+        question: 'What infrastructure do I need?',
+        answer:
+          'A Linux server (Ubuntu 25.10 verified, 24.04 documented), PostgreSQL, Redis and nginx. The native installer sets up the application; you provide and back up the server.',
+      },
+      {
+        question: 'Is there a hosted or cloud version?',
+        answer:
+          'Not yet. OpenEstate is self-hosted only today. A hosted demo is planned but not available.',
+      },
+      {
+        question: 'Can I use it outside India?',
+        answer:
+          'The core workflow is not India-specific, but the built-in tax handling (GST, TDS) and RERA fields are. You would need to adapt or disable those for another jurisdiction.',
+      },
+      {
+        question: 'How do I get support?',
+        answer:
+          'Through the public GitHub issue tracker. There is no paid support offering today. Questions, bug reports and feature requests all go through the same channel.',
+      },
+      {
+        question: 'Is it production-ready?',
+        answer:
+          'OpenEstate v0.8.4 is a pre-1.0 release suited to a first pilot. It has not been independently audited or certified. Review the known gaps on this page before relying on it.',
+      },
     ],
     links: {
       repo: REPO,

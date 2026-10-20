@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Container } from '@/components/container';
+import { FaqAccordion } from '@/components/faq-accordion';
 import { JsonLd } from '@/components/json-ld';
 import { ModelList } from '@/components/model-list';
 import { ProductAccent } from '@/components/product-accent';
@@ -135,6 +136,29 @@ export default async function ProductPage({ params }: Props) {
         </div>
       </Section>
 
+      {/* How it works — step-by-step workflow */}
+      {product.workflow && product.workflow.length > 0 && (
+        <Section tone="muted" labelledBy="workflow-title">
+          <SectionHeading
+            id="workflow-title"
+            eyebrow="How it works"
+            title="From first inquiry to settled commission"
+            intro="A typical journey through the system, from lead capture to broker payout."
+          />
+          <ol className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {product.workflow.map((w) => (
+              <li key={w.step} className="relative rounded-card border border-line bg-surface p-6">
+                <span aria-hidden className="font-mono text-3xl font-bold text-product/20">
+                  {w.step}
+                </span>
+                <h3 className="mt-2 text-lg font-semibold">{w.title}</h3>
+                <p className="mt-2 text-sm text-pretty text-ink-muted">{w.description}</p>
+              </li>
+            ))}
+          </ol>
+        </Section>
+      )}
+
       {/* Capabilities */}
       <Section tone="muted" labelledBy="capabilities-title">
         <SectionHeading
@@ -166,6 +190,34 @@ export default async function ProductPage({ params }: Props) {
           ))}
         </div>
       </Section>
+
+      {/* Tech stack */}
+      {product.techStack && product.techStack.length > 0 && (
+        <Section labelledBy="stack-title">
+          <SectionHeading
+            id="stack-title"
+            eyebrow="Tech stack"
+            title="What it is built with"
+            intro="Open, well-known technologies you can hire for and operate yourself."
+          />
+          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {product.techStack.map((t) => (
+              <li
+                key={t.name}
+                className="flex items-center gap-4 rounded-card border border-line bg-surface p-5"
+              >
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-product/10 font-mono text-sm font-bold text-product">
+                  {t.name.charAt(0)}
+                </span>
+                <div>
+                  <p className="font-semibold">{t.name}</p>
+                  <p className="text-sm text-ink-muted">{t.role}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Section>
+      )}
 
       {/* Deployment and licence */}
       {product.deployment && (
@@ -245,6 +297,42 @@ export default async function ProductPage({ params }: Props) {
               </li>
             ))}
         </ul>
+      </Section>
+
+      {/* FAQ */}
+      {product.faq && product.faq.length > 0 && (
+        <Section tone="muted" labelledBy="faq-title">
+          <SectionHeading
+            id="faq-title"
+            eyebrow="FAQ"
+            title="Frequently asked questions"
+            intro="Common questions about OpenEstate, answered plainly."
+          />
+          <FaqAccordion items={product.faq} />
+        </Section>
+      )}
+
+      {/* CTA banner */}
+      <Section labelledBy="cta-title">
+        <div className="rounded-card border border-product/30 bg-product/5 p-8 sm:p-12 lg:flex lg:items-center lg:justify-between lg:gap-8">
+          <div className="max-w-2xl">
+            <h2 id="cta-title" className="text-3xl font-semibold tracking-tight sm:text-4xl">
+              Ready to try {product.name}?
+            </h2>
+            <p className="mt-3 text-lg text-pretty text-ink-muted">
+              It is free, open source, and yours to host. Clone the repository, follow the
+              installation guide, and have a running system in under an hour.
+            </p>
+          </div>
+          <div className="mt-8 flex shrink-0 flex-col gap-3 sm:flex-row lg:mt-0">
+            {links.install && <ButtonLink href={links.install}>Get started</ButtonLink>}
+            {links.repo && (
+              <ButtonLink href={links.repo} variant="secondary">
+                View source
+              </ButtonLink>
+            )}
+          </div>
+        </div>
       </Section>
     </ProductAccent>
   );
