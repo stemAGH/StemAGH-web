@@ -1,12 +1,12 @@
 # Cinematic scroll video
 
-The homepage inserts `ScrollVideo` between Services and OpenEstate. It uses the existing Next.js/React architecture, a scoped CSS module, native HTML5 seeking and requestAnimationFrame. There are no new packages.
+The homepage opens with a compact editorial introduction followed by `ScrollVideo`, before the service index and OpenEstate feature. It uses the existing Next.js/React architecture, a scoped CSS module, native HTML5 seeking and requestAnimationFrame. There are no new packages.
 
-## Supply the real film
+## Replace or disable the bundled film
 
-No production film has been supplied or generated. The default is a compact branded section with readable project steps and no video request.
+An original nine-second interface motion graphic is bundled at `public/media/stemagh-story.mp4`, with a matching poster. It is rendered artwork illustrating design, software workflows and handover; it is not customer footage or evidence of customer results. The film is H.264, 1280×720, 30fps, silent, with a keyframe every 15 frames and faststart metadata. Set `SCROLL_VIDEO_SRC=off` to use the compact static narrative instead.
 
-1. Put your film at `public/media/stemagh-story.mp4` (create `public/media` if necessary).
+1. To replace the animation, put your film at `public/media/stemagh-story.mp4` (create `public/media` if necessary).
 2. Optionally put a still from that same film at `public/media/stemagh-story-poster.jpg`.
 3. Set these build-time environment variables in `.env.local` locally or your hosting project's environment settings:
 
@@ -42,7 +42,7 @@ All-intra (`-g 1`) improves seeking but increases file size. Choose resolution/q
 - Captions crossfade at thirds of the scroll distance. The progress line is decorative. All text remains in HTML; there is no live-region announcement on every scroll.
 - Mobile/coarse-pointer, reduced-motion and data-saving users get a compact layout with an explicit “Load and play film” button and standard video controls. No source is attached until that action. Playback stays muted.
 - Slow loading/deep-link arrival uses native playback rather than expanding a section under the reader. A 12-second preparation timeout also falls back to native playback. Decode/load failure restores the static narrative. These fallback choices remain in place for that visit.
-- No source, or JavaScript disabled: a normal compact content section, without an empty multi-screen scroll runway.
+- Source explicitly disabled, or JavaScript disabled: a normal compact content section, without an empty multi-screen scroll runway.
 
 The video uses `object-fit: cover` in the desktop stage, so keep important content away from its edges. Native playback uses a 16:9 surface. Adjust these rules in `scroll-video.module.css` for a final film with a different intended composition.
 
@@ -59,3 +59,9 @@ pnpm exec playwright test e2e/scroll-video.spec.ts
 ```
 
 Playwright intercepts that special test URL, serving the fixture with byte-range support; it is not a public asset. The cloud runner may need the existing `/workspace/playwright-onboarding.config.mjs` override for system Chromium. Stop any previously running test server first; a build with the test source must not be deployed. After this run, rebuild with the real production configuration (or no source). Verify final footage separately in Safari/iOS and on physical devices; Chromium fixture checks cannot establish final encoding quality or cross-browser frame accuracy.
+
+## Reproduce the original animation
+
+`scripts/render-brand-film.py` renders the original three-part motion graphic and poster. It needs Python with Pillow and NumPy plus ffmpeg; these are authoring tools, not website runtime dependencies. Run `python scripts/render-brand-film.py` from the repository root. The MP4 and JPEG are checked in, so deployment does not need the renderer. No generative video service, external footage or customer results are used.
+
+The default browser tests exercise the bundled film directly. Use `SCROLL_VIDEO_SRC=off` for the explicit no-source test, or the temporary fixture variables above for isolated decoder tests.

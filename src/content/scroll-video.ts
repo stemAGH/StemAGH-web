@@ -1,8 +1,11 @@
-/** Optional real footage. Leave unset until the final film is supplied. */
+/** Original rendered brand film; override with your own footage or set the source to "off". */
 export const scrollVideo = {
-  src: process.env.SCROLL_VIDEO_SRC || undefined,
-  poster: process.env.SCROLL_VIDEO_POSTER || undefined,
-  title: 'From the first brief to a working product',
+  src:
+    process.env.SCROLL_VIDEO_SRC === 'off'
+      ? undefined
+      : process.env.SCROLL_VIDEO_SRC || '/media/stemagh-story.mp4',
+  poster: process.env.SCROLL_VIDEO_POSTER || '/media/stemagh-story-poster.jpg',
+  title: 'An idea becomes a working system.',
   /** Match the frame rate of the encoded film for the final seekable frame. */
   fps: 30,
   chapters: [

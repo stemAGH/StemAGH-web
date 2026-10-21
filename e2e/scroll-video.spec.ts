@@ -3,6 +3,8 @@ import { readFileSync } from 'node:fs';
 import { scrollProgress, videoTime } from '../src/components/scroll-video-timeline';
 
 const configured = process.env.SCROLL_VIDEO_SRC === '/__scroll-video-test.mp4';
+const bundled = !process.env.SCROLL_VIDEO_SRC;
+const mediaPattern = configured ? '**/__scroll-video-test.mp4' : '**/media/stemagh-story.mp4';
 const sectionSelector = 'section[aria-labelledby="film-title"]';
 
 test('timeline clamps endpoints and reverses without hysteresis', () => {
@@ -17,7 +19,7 @@ test('timeline clamps endpoints and reverses without hysteresis', () => {
 });
 
 test('no source renders a compact readable section without media requests', async ({ page }) => {
-  test.skip(!!process.env.SCROLL_VIDEO_SRC, 'Default configuration only');
+  test.skip(process.env.SCROLL_VIDEO_SRC !== 'off', 'Explicitly disabled film configuration only');
   const media: string[] = [];
   page.on('request', (request) => {
     if (request.resourceType() === 'media') media.push(request.url());
@@ -32,12 +34,13 @@ test('no source renders a compact readable section without media requests', asyn
   expect(media).toEqual([]);
 });
 
-test.describe('real decoder using a temporary QA-only film', () => {
+test.describe('real video decoder', () => {
   test.skip(
-    !configured || !process.env.SCROLL_VIDEO_TEST_FILE,
+    !bundled && (!configured || !process.env.SCROLL_VIDEO_TEST_FILE),
     'Enable the documented temporary media fixture run',
   );
   test.beforeEach(async ({ page }) => {
+    if (!configured) return;
     const buffer = readFileSync(process.env.SCROLL_VIDEO_TEST_FILE!);
     await page.route('**/__scroll-video-test.mp4', (route) => {
       const range = route.request().headers().range;
@@ -133,10 +136,8 @@ test.describe('real decoder using a temporary QA-only film', () => {
 
   test('failed media keeps content readable without a long pin', async ({ page, isMobile }) => {
     test.skip(isMobile, 'Desktop automatic loading path');
-    await page.unroute('**/__scroll-video-test.mp4');
-    await page.route('**/__scroll-video-test.mp4', (route) =>
-      route.fulfill({ status: 404, body: 'Unavailable' }),
-    );
+    await page.unroute(mediaPattern);
+    await page.route(mediaPattern, (route) => route.fulfill({ status: 404, body: 'Unavailable' }));
     await page.goto('/');
     const section = page.locator(sectionSelector);
     await section.scrollIntoViewIfNeeded();

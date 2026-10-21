@@ -38,15 +38,13 @@ test('services, showcase, hosting terms and enquiry journey work', async ({ page
   );
 });
 
-test('slideshow controls and scroll progress respond to interaction', async ({ page }) => {
+test('film-led story keeps the scroll progress and surrounding content accessible', async ({
+  page,
+}) => {
   await page.goto('/');
-  const carousel = page.getByRole('region', { name: 'What we build' });
-  await carousel.getByRole('button', { name: 'Show software slide' }).click();
-  await expect(carousel.getByRole('heading')).toHaveText('Your workflow, in one workspace.');
-  await carousel.getByRole('button', { name: 'Next slide', exact: true }).click();
-  await expect(carousel.getByRole('heading')).toHaveText('A launch you stay in control of.');
-  await carousel.getByRole('button', { name: 'Previous slide', exact: true }).click();
-  await expect(carousel.getByRole('heading')).toHaveText('Your workflow, in one workspace.');
+  await expect(
+    page.getByRole('region', { name: 'An idea becomes a working system.' }),
+  ).toBeAttached();
   await page.locator('.studio-cta').scrollIntoViewIfNeeded();
   await expect(page.locator('.studio-cta h2')).not.toHaveClass(/reveal-pending/);
   await expect
@@ -59,7 +57,10 @@ test('reduced motion stops autoplay and project brief prepares an unsent email',
 }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
-  await expect(page.getByRole('button', { name: 'Play slideshow', exact: true })).toBeVisible();
+  await expect(page.locator('section[aria-labelledby="film-title"]')).toHaveAttribute(
+    'data-mode',
+    'native',
+  );
   await expect(page.locator('.reveal-pending')).toHaveCount(0);
   await page.goto('/contact#project-brief');
   await page.getByLabel('Your name', { exact: true }).fill('Preview visitor');

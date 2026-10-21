@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { ScrollVideo } from '@/components/scroll-video';
 import { scrollVideo } from '@/content/scroll-video';
 import { ScrollExperience } from '@/components/scroll-experience';
-import { ServiceSlideshow } from '@/components/service-slideshow';
 import { OpenEstateShowcase } from '@/components/openestate-showcase';
 import { site } from '@/content/site';
 import { openGraph } from '@/content/seo';
@@ -41,62 +40,40 @@ const services = [
 ];
 export default function HomePage() {
   return (
-    <div className="studio-home">
+    <div className="studio-home studio-story">
       <ScrollExperience />
-      <section className="studio-hero" aria-labelledby="hero-title">
-        <div className="studio-wrap hero-layout">
-          <div className="hero-message">
-            <p className="eyebrow">
-              <span className="status-dot" /> WEBSITES & CUSTOM SOFTWARE
+      <section className="studio-hero narrative-hero" aria-labelledby="hero-title">
+        <div className="studio-wrap">
+          <div className="narrative-kicker">
+            <p className="eyebrow">STEMAGH / SOFTWARE · SOLUTIONS · GROWTH</p>
+            <span>WEBSITES & CUSTOM SOFTWARE</span>
+          </div>
+          <h1 id="hero-title">
+            Built around
+            <br />
+            <span>your next move.</span>
+          </h1>
+          <div className="narrative-intro">
+            <p>
+              More than a website. Less friction in the way you work. We turn business requirements
+              into considered websites and software.
             </p>
-            <h1 id="hero-title">
-              Built around
-              <br />
-              your business.
-              <br />
-              <span className="hero-highlight">Ready for what’s next.</span>
-            </h1>
-            <p className="hero-description">
-              A website that explains what you do. Software that simplifies how you work. From the
-              first brief to launch, we make every step clear.
-            </p>
-            <div className="hero-actions">
+            <div>
               <Link className="studio-button" href="/contact#project-brief">
                 Discuss your project <span>↗</span>
               </Link>
-              <a className="studio-text-link" href="#work">
-                See OpenEstate <span>↓</span>
+              <a className="studio-text-link" href="#film-title">
+                Follow the build ↓
               </a>
             </div>
-            <p className="hero-assurance">Defined scope. Review milestones. Accounts you own.</p>
           </div>
-          <ServiceSlideshow />
-        </div>
-        <div className="studio-wrap hero-footnote">
-          <span>STEMAGH / DESIGN · DEVELOPMENT · DEPLOYMENT</span>
-          <a href="#services">EXPLORE WHAT WE BUILD ↓</a>
+          <div className="narrative-bottom">
+            <span>THE JOURNEY: BRIEF → INTERFACE → WORKING PRODUCT</span>
+            <span>SCROLL TO SEE IT TAKE SHAPE ↓</span>
+          </div>
         </div>
       </section>
-      <div className="trust-strip studio-wrap">
-        <div>
-          <b>01</b>
-          <span>
-            Clarity before commitment<small>Scope and costs agreed before work starts</small>
-          </span>
-        </div>
-        <div>
-          <b>02</b>
-          <span>
-            Work you can review<small>See progress at agreed milestones</small>
-          </span>
-        </div>
-        <div>
-          <b>03</b>
-          <span>
-            Control after launch<small>Access, accounts and handover documented</small>
-          </span>
-        </div>
-      </div>
+      <ScrollVideo {...scrollVideo} />
       <section
         id="services"
         className="studio-section studio-wrap"
@@ -104,11 +81,11 @@ export default function HomePage() {
       >
         <div className="section-heading">
           <div>
-            <p className="eyebrow">01 / WHAT WE DO</p>
+            <p className="eyebrow">01 / WHAT NEEDS TO CHANGE?</p>
             <h2 id="services-title">
-              A practical build.
+              Three ways
               <br />
-              <em>A clear deliverable.</em>
+              <em>we move you forward.</em>
             </h2>
           </div>
           <p>
@@ -147,16 +124,15 @@ export default function HomePage() {
           ))}
         </div>
       </section>
-      <ScrollVideo {...scrollVideo} />
       <section id="work" className="work-section" aria-labelledby="work-title">
         <div className="studio-wrap">
           <div className="section-heading">
             <div>
-              <p className="eyebrow">02 / FROM OUR WORKSHOP</p>
+              <p className="eyebrow">02 / A PRODUCT YOU CAN INSPECT</p>
               <h2 id="work-title">
-                Inspect the product.
+                Inside
                 <br />
-                <em>See how we build.</em>
+                <em>OpenEstate.</em>
               </h2>
             </div>
             <p>
@@ -187,14 +163,17 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section className="studio-section studio-wrap" aria-labelledby="process-title">
+      <section
+        className="studio-section studio-wrap narrative-process"
+        aria-labelledby="process-title"
+      >
         <div className="section-heading">
           <div>
-            <p className="eyebrow">03 / SIMPLE BY DESIGN</p>
+            <p className="eyebrow">03 / THE WORKING AGREEMENT</p>
             <h2 id="process-title">
-              Know what happens
+              No mystery
               <br />
-              <em>before you start.</em>
+              <em>between milestones.</em>
             </h2>
           </div>
           <p>You bring the idea. We bring the questions, the craft and a plan you can follow.</p>
@@ -228,15 +207,24 @@ export default function HomePage() {
           ))}
         </ol>
       </section>
-      <section className="hosting-section studio-wrap" aria-labelledby="hosting-title">
+      <section
+        className="hosting-section studio-wrap narrative-ownership"
+        aria-labelledby="hosting-title"
+      >
         <div className="hosting-art" aria-hidden="true">
-          <span>↗</span>
+          <span>
+            THE
+            <br />
+            HANDOVER.
+          </span>
           <i>
-            YOUR WEBSITE
+            01 &nbsp; YOUR DOMAIN
             <br />
-            YOUR ACCOUNT
+            02 &nbsp; YOUR HOSTING
             <br />
-            YOUR CONTROL
+            03 &nbsp; YOUR ACCESS
+            <br />
+            04 &nbsp; YOUR NEXT CHAPTER
           </i>
         </div>
         <div>
