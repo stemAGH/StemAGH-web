@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { ScrollVideo } from '@/components/scroll-video';
+import { scrollVideo } from '@/content/scroll-video';
 import { ScrollExperience } from '@/components/scroll-experience';
 import { ServiceSlideshow } from '@/components/service-slideshow';
 import { OpenEstateShowcase } from '@/components/openestate-showcase';
@@ -145,6 +147,7 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+      <ScrollVideo {...scrollVideo} />
       <section id="work" className="work-section" aria-labelledby="work-title">
         <div className="studio-wrap">
           <div className="section-heading">
