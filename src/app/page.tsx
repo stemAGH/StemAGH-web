@@ -1,7 +1,5 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ScrollVideo } from '@/components/scroll-video';
-import { scrollVideo } from '@/content/scroll-video';
 import { ScrollExperience } from '@/components/scroll-experience';
 import { OpenEstateShowcase } from '@/components/openestate-showcase';
 import { site } from '@/content/site';
@@ -62,18 +60,17 @@ export default function HomePage() {
               <Link className="studio-button" href="/contact#project-brief">
                 Discuss your project <span>↗</span>
               </Link>
-              <a className="studio-text-link" href="#film-title">
-                Follow the build ↓
+              <a className="studio-text-link" href="#work">
+                Explore OpenEstate ↓
               </a>
             </div>
           </div>
           <div className="narrative-bottom">
             <span>THE JOURNEY: BRIEF → INTERFACE → WORKING PRODUCT</span>
-            <span>SCROLL TO SEE IT TAKE SHAPE ↓</span>
+            <span>EXPLORE OUR WORK ↓</span>
           </div>
         </div>
       </section>
-      <ScrollVideo {...scrollVideo} />
       <section
         id="services"
         className="studio-section studio-wrap"
