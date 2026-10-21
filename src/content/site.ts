@@ -3,10 +3,11 @@ export const site = {
   contactEmail: 'contact@stemagh.com' as string | undefined,
   name: 'StemAGH',
   description:
-    'StemAGH builds practical software products for complex operational workflows, open and adaptable where that serves the customer.',
+    'StemAGH designs and builds business websites, web applications and custom software. Thoughtful design, practical tools and a clear path to launch.',
 };
 
 export const navLinks = [
+  { href: '/#services', label: 'Services', match: 'exact' },
   { href: '/products', label: 'Products', match: 'exact' },
   { href: '/products/openestate', label: 'OpenEstate', match: 'prefix' },
   { href: '/about', label: 'About', match: 'exact' },

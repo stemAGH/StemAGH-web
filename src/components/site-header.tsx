@@ -8,7 +8,7 @@ import { Wordmark } from './wordmark';
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-canvas/95 backdrop-blur-sm">
-      <Container className="relative flex h-16 items-center justify-between">
+      <Container className="relative flex h-20 items-center justify-between">
         <Wordmark />
         <div className="hidden items-center gap-2 md:flex">
           <nav aria-label="Primary">
@@ -27,8 +27,8 @@ export function SiteHeader() {
               ))}
             </ul>
           </nav>
-          <ButtonLink href="/products" className="ml-2 py-2! max-lg:hidden">
-            Explore products
+          <ButtonLink href="/contact" className="ml-4 py-3! max-lg:hidden">
+            Let’s talk ↗
           </ButtonLink>
         </div>
         <MobileNav />

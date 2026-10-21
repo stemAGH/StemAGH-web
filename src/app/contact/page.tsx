@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { ProjectBrief } from '@/components/project-brief';
 import { openGraph } from '@/content/seo';
 import { Container } from '@/components/container';
 import { TextLink } from '@/components/links';
@@ -6,8 +7,7 @@ import { Section } from '@/components/section';
 import { featuredProduct } from '@/content/products';
 import { site } from '@/content/site';
 
-const description =
-  'How to reach StemAGH and the OpenEstate project: questions, bug reports, contributions and private security reports.';
+const description = 'Discuss a website, web application or custom software project with StemAGH.';
 
 export const metadata: Metadata = {
   title: 'Contact',
@@ -54,17 +54,21 @@ export default function ContactPage() {
             id="contact-title"
             className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl"
           >
-            Get in touch
+            Let’s build something.
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-pretty text-ink-muted">
-            Pick the route that fits. Each one below is a real, public channel.
+            Tell us about your business, what you want to build and your ideal timeline. We’ll
+            discuss the scope and next steps with you.
           </p>
         </Container>
       </section>
 
+      <div className="studio-wrap py-14">
+        <ProjectBrief />
+      </div>
       <Section labelledBy="general-title">
         <h2 id="general-title" className="text-2xl font-semibold tracking-tight">
-          General enquiries
+          Discuss your project
         </h2>
         {site.contactEmail ? (
           <p className="mt-3 text-lg">

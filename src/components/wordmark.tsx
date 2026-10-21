@@ -1,18 +1,18 @@
+import Image from 'next/image';
 import Link from 'next/link';
-import { LogoMark } from './logo-mark';
 
-/** Mark plus typographic wordmark. The one place the brand lockup is defined. */
+/** Original owner-supplied logo; CSS frames the artwork without changing the asset. */
 export function Wordmark() {
   return (
-    <Link
-      href="/"
-      className="inline-flex items-center gap-2 text-lg font-semibold tracking-tight text-ink"
-      aria-label="StemAGH home"
-    >
-      <LogoMark className="text-accent" />
-      <span>
-        Stem<span className="text-accent">AGH</span>
-      </span>
+    <Link href="/" className="brand-logo" aria-label="StemAGH home">
+      <Image
+        src="/stemagh-logo.jpg"
+        alt=""
+        width={1280}
+        height={640}
+        sizes="(max-width: 700px) 222px, 259px"
+        className="brand-logo-image"
+      />
     </Link>
   );
 }

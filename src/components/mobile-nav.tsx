@@ -56,8 +56,8 @@ export function MobileNav() {
             ))}
           </ul>
           <div className="mt-2 pb-2" onClick={() => setOpen(false)}>
-            <ButtonLink href="/products" className="w-full">
-              Explore products
+            <ButtonLink href="/contact" className="w-full">
+              Discuss your project
             </ButtonLink>
           </div>
         </div>
