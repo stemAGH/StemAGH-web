@@ -8,7 +8,7 @@ import { principles } from '@/content/principles';
 import { featuredProduct, products } from '@/content/products';
 
 const description =
-  'StemAGH is a software brand building practical products for real business workflows. OpenEstate is its first product.';
+  'StemAGH builds business websites, web applications and custom software, alongside its open-source real estate operations product, OpenEstate.';
 
 export const metadata: Metadata = {
   title: 'About',
@@ -27,12 +27,12 @@ export default function AboutPage() {
             id="about-title"
             className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight text-balance sm:text-5xl"
           >
-            A software brand for practical, long-lived products
+            Websites, custom software and products built for real work
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-pretty text-ink-muted">
-            StemAGH builds software for real business workflows. It is the parent brand: it builds
-            and maintains a portfolio of products, each with its own audience, and today that
-            portfolio is one product, {p.name}.
+            StemAGH builds business websites, web applications and custom software for real business
+            workflows. It is the parent brand: it builds and maintains a portfolio of products, each
+            with its own audience, and today that portfolio is one product, {p.name}.
           </p>
         </Container>
       </section>

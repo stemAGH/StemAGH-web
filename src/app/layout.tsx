@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { JsonLd } from '@/components/json-ld';
 import { GeistSans } from 'geist/font/sans';
 import { siteUrl } from '@/content/seo';
 import { site } from '@/content/site';
@@ -10,6 +11,7 @@ import './globals.css';
 export const metadata: Metadata = {
   title: { default: 'StemAGH', template: '%s | StemAGH' },
   description: site.description,
+  ...(process.env.VERCEL_ENV === 'preview' && { robots: { index: false, follow: false } }),
   ...(siteUrl && {
     metadataBase: new URL(siteUrl),
     alternates: { canonical: './' },
@@ -29,6 +31,38 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         >
           Skip to content
         </a>
+        <JsonLd
+          data={{
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            name: site.name,
+            description: site.description,
+            ...(site.contactEmail && { email: site.contactEmail }),
+            ...(siteUrl && {
+              '@id': `${siteUrl}/#organization`,
+              url: siteUrl,
+              logo: {
+                '@type': 'ImageObject',
+                url: `${siteUrl}/stemagh-logo.jpg`,
+                width: 1280,
+                height: 640,
+              },
+            }),
+          }}
+        />
+        {siteUrl && (
+          <JsonLd
+            data={{
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              '@id': `${siteUrl}/#website`,
+              url: siteUrl,
+              name: site.name,
+              publisher: { '@id': `${siteUrl}/#organization` },
+              inLanguage: 'en',
+            }}
+          />
+        )}
         <SiteHeader />
         <main id="main" className="flex-1">
           {children}

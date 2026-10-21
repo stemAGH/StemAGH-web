@@ -22,7 +22,14 @@ export function openGraph(
     siteName: 'StemAGH',
     ...(siteUrl && {
       url: path === '/' ? siteUrl : `${siteUrl}${path}`,
-      images: [{ url: '/og.png', width: 1200, height: 630, alt: 'StemAGH: dependable software' }],
+      images: [
+        {
+          url: '/og.png',
+          width: 1200,
+          height: 630,
+          alt: 'StemAGH — websites, web applications and custom software',
+        },
+      ],
     }),
   };
 }

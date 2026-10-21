@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { JsonLd } from '@/components/json-ld';
 import { ScrollExperience } from '@/components/scroll-experience';
 import { ServiceSlideshow } from '@/components/service-slideshow';
 import { OpenEstateShowcase } from '@/components/openestate-showcase';
@@ -8,13 +7,9 @@ import { site } from '@/content/site';
 import { openGraph } from '@/content/seo';
 
 export const metadata: Metadata = {
-  title: { absolute: 'StemAGH | Websites & software built for your next chapter' },
+  title: { absolute: 'Website Development & Custom Software | StemAGH' },
   description: site.description,
-  openGraph: openGraph(
-    'StemAGH | Websites & software built for your next chapter',
-    site.description,
-    '/',
-  ),
+  openGraph: openGraph('Website Development & Custom Software | StemAGH', site.description, '/'),
 };
 const services = [
   {
@@ -45,14 +40,6 @@ const services = [
 export default function HomePage() {
   return (
     <div className="studio-home">
-      <JsonLd
-        data={{
-          '@context': 'https://schema.org',
-          '@type': 'Organization',
-          name: site.name,
-          description: site.description,
-        }}
-      />
       <ScrollExperience />
       <section className="studio-hero" aria-labelledby="hero-title">
         <div className="studio-wrap hero-layout">
@@ -127,6 +114,11 @@ export default function HomePage() {
             experiences with a job to do.
           </p>
         </div>
+        <p className="mb-6">
+          <Link className="studio-text-link" href="/services">
+            View service deliverables and project terms ↗
+          </Link>
+        </p>
         <div className="service-grid">
           {services.map((s) => (
             <article className="service-card" key={s.n}>

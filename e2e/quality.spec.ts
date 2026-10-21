@@ -96,8 +96,10 @@ test('reduced motion removes transitions', async ({ page }) => {
 
 test('structured data is limited to verifiable facts', async ({ page }) => {
   await page.goto('/products/openestate');
-  const raw = await page.locator('script[type="application/ld+json"]').first().textContent();
-  const data = JSON.parse(raw!);
+  const schemas = await page.locator('script[type="application/ld+json"]').allTextContents();
+  const data = schemas
+    .map((raw) => JSON.parse(raw))
+    .find((item) => item['@type'] === 'SoftwareApplication');
   expect(data['@type']).toBe('SoftwareApplication');
   expect(data.name).toBe('OpenEstate');
   for (const banned of ['offers', 'aggregateRating', 'review', 'url']) {
