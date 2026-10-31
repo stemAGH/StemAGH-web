@@ -92,7 +92,7 @@ for (const route of routes) {
       expect(href).toBeTruthy();
       const res = await request.get(href!);
       expect(res.status()).toBe(200);
-      expect(res.headers()['content-type']).toContain('svg');
+      expect(res.headers()['content-type']).toBe('image/png');
     });
   });
 }

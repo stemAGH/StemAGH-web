@@ -123,19 +123,20 @@ Nothing is committed yet. `.gitignore` excludes `.env*` (except `.env.example`),
 `contact@stemagh.com` is configured in `src/content/site.ts` and shown on `/contact` and in the
 footer of every page. The owner has confirmed it works; this project has not verified that.
 
-The project brief on `/contact` posts to `/api/contact`, which emails the enquiry through Resend
-when `RESEND_API_KEY` and `CONTACT_FROM` are set (see `.env.example`). Until then it answers 503
-and the form hands the visitor a prepared email draft instead, so nothing is lost. To turn it on:
-create a Resend account, verify `stemagh.com` as a sending domain (DNS records), create an API
-key, and add `RESEND_API_KEY` (secret) and `CONTACT_FROM` in Vercel, then redeploy. Spam
-protection is a hidden field plus a 3-second minimum; there is no rate limit yet.
+The project brief on `/contact` posts to `/api/contact`, which emails the enquiry to
+`contact@stemagh.com` through FormSubmit (formsubmit.co): no account, no key. The first enquiry
+makes FormSubmit send a one-time activation email to that inbox; click it, and every later
+enquiry arrives as a formatted email with reply-to set to the visitor. Until activation (or if
+FormSubmit is down) the visitor is offered a prepared email draft instead, so nothing is lost.
+To use Resend instead, set `RESEND_API_KEY` (secret) and `CONTACT_FROM` (see `.env.example`).
+Spam protection is a hidden field plus a 3-second minimum; there is no rate limit yet.
 
 ## 6. Legal and privacy
 
 The site sets no cookies, runs no analytics, and loads no third-party scripts or fonts (the
 Playwright suite checks cookies and request hosts on every route). Since the enquiry form was
 added, `/privacy` describes what is actually processed: form fields sent to the owner's inbox via
-Resend, demo data kept in the visitor's own browser, and Vercel's request logs. Update it whenever
+FormSubmit, demo data kept in the visitor's own browser, and Vercel's request logs. Update it whenever
 any of that changes. Still the owner's to decide:
 
 - **Who is responsible for enquiries and for the site.** StemAGH is not a registered legal entity.

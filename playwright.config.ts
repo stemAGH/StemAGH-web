@@ -18,5 +18,7 @@ export default defineConfig({
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
+    // The enquiry form must never send real mail from a test run.
+    env: { CONTACT_DELIVERY: 'off' },
   },
 });

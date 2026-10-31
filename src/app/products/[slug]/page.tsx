@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { Container } from '@/components/container';
 import { JsonLd } from '@/components/json-ld';
 import { ModelList } from '@/components/model-list';
+import { OpenEstateShowcase } from '@/components/openestate-showcase';
 import { ProductAccent } from '@/components/product-accent';
 import { ButtonLink, TextLink } from '@/components/links';
 import { Section, SectionHeading } from '@/components/section';
@@ -113,6 +114,20 @@ export default async function ProductPage({ params }: Props) {
           </dl>
         </Container>
       </section>
+
+      {product.slug === 'openestate' && (
+        <section aria-labelledby="tour-title" className="work-section">
+          <Container>
+            <h2 id="tour-title" className="text-3xl font-semibold tracking-tight">
+              A look inside
+            </h2>
+            <p className="mt-3 mb-8 text-ink-muted">
+              Switch between screens. Interface illustration with sample data.
+            </p>
+            <OpenEstateShowcase />
+          </Container>
+        </section>
+      )}
 
       {/* Audience */}
       <Section labelledBy="audience-title">

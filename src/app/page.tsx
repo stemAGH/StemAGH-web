@@ -1,341 +1,204 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
-import { ScrollExperience } from '@/components/scroll-experience';
-import { ServiceSlideshow } from '@/components/service-slideshow';
-import { OpenEstateShowcase } from '@/components/openestate-showcase';
-import { AppDemo } from '@/components/app-demo';
 import { site } from '@/content/site';
 import { openGraph } from '@/content/seo';
+import './home.css';
 
 export const metadata: Metadata = {
   title: { absolute: 'Website Development & Custom Software | StemAGH' },
   description: site.description,
   openGraph: openGraph('Website Development & Custom Software | StemAGH', site.description, '/'),
 };
+
 const services = [
   {
-    n: '01',
-    icon: '↗',
-    name: 'Websites that mean business.',
-    text: 'A responsive business website with clear service pages, enquiry links and search metadata. Content and page scope agreed in the proposal.',
-    tags: ['Business websites', 'Responsive design', 'Search foundations'],
-    type: 'web',
+    icon: '◧',
+    name: 'Business websites',
+    text: 'Fast, mobile-first sites that explain what you do and turn visitors into enquiries.',
+    href: '/contact?service=web#project-brief',
   },
   {
-    n: '02',
-    icon: '⌘',
-    name: 'Software that works your way.',
-    text: 'Dashboards, portals and workflow tools built around agreed requirements. Review the interface and working features at defined milestones.',
-    tags: ['Web applications', 'Business dashboards', 'Workflow tools'],
-    type: 'software',
+    icon: '▦',
+    name: 'Web & mobile apps',
+    text: 'Customer portals, owner apps and dashboards your users open every day.',
+    href: '/contact?service=app#project-brief',
   },
   {
-    n: '03',
-    icon: '◎',
-    name: 'A smoother path to launch.',
-    text: 'Domain connection, deployment checks and account handover. Hosting costs and any ongoing support are agreed separately before launch.',
-    tags: ['Hosting setup', 'Deployment', 'Handover'],
-    type: 'launch',
+    icon: '⚙',
+    name: 'Custom software',
+    text: 'Workflow tools built around how your team actually works, not a template.',
+    href: '/contact?service=software#project-brief',
   },
 ];
+
+const steps = [
+  ['Understand', 'Your goals, users and current workflow.'],
+  ['Plan', 'Written scope, milestones and agreed costs.'],
+  ['Build', 'Working previews you review as we go.'],
+  ['Launch', 'Live in accounts you own, with handover.'],
+];
+
 export default function HomePage() {
   return (
-    <div className="studio-home">
-      <ScrollExperience />
-      <section className="studio-hero" aria-labelledby="hero-title">
-        <div className="studio-wrap hero-layout">
-          <div className="hero-message">
-            <p className="eyebrow">
-              <span className="status-dot" /> WEBSITES & CUSTOM SOFTWARE
-            </p>
+    <div className="home">
+      <section className="home-hero" aria-labelledby="hero-title">
+        <div className="home-wrap home-hero-grid">
+          <div>
+            <p className="home-kicker">Websites · Apps · Custom software</p>
             <h1 id="hero-title">
-              Built around
-              <br />
-              your business.
-              <br />
-              <span className="hero-highlight">Ready for what’s next.</span>
+              Software built around <span>your business.</span>
             </h1>
-            <p className="hero-description">
-              A website that explains what you do. Software that simplifies how you work. From the
-              first brief to launch, we make every step clear.
+            <p className="home-lead">
+              We design and build websites, apps and business tools. Scope, milestones and costs are
+              agreed with you before any work starts.
             </p>
-            <div className="hero-actions">
-              <Link className="studio-button" href="/contact#project-brief">
-                Discuss your project <span>↗</span>
+            <div className="home-actions">
+              <Link className="home-btn" href="/contact#project-brief">
+                Start a project <span aria-hidden="true">→</span>
               </Link>
-              <a className="studio-text-link" href="#demo">
-                Try a live demo <span>↓</span>
-              </a>
+              <Link className="home-btn home-btn-ghost" href="/work">
+                Try a live demo
+              </Link>
             </div>
-            <p className="hero-assurance">Defined scope. Review milestones. Accounts you own.</p>
+            <ul className="home-proof">
+              <li>Scope and cost agreed first</li>
+              <li>Progress you can review</li>
+              <li>Accounts you own</li>
+            </ul>
           </div>
-          <ServiceSlideshow />
-        </div>
-        <div className="studio-wrap hero-footnote">
-          <span>STEMAGH / DESIGN · DEVELOPMENT · DEPLOYMENT</span>
-          <a href="#services">EXPLORE WHAT WE BUILD ↓</a>
+          <div className="home-hero-visual" aria-hidden="true">
+            <div className="home-phone">
+              <Image
+                src="/demos/aurelia/images/willow-creek.webp"
+                alt=""
+                width={1080}
+                height={720}
+                sizes="260px"
+                priority
+              />
+              <div className="home-phone-card">
+                <small>Estimated portfolio value</small>
+                <strong>₹4,42,50,000</strong>
+                <span>3 properties · Updated today</span>
+              </div>
+            </div>
+            <div className="home-float home-float-a">
+              <b>Live demo</b>
+              <span>Tap through a real owner app</span>
+            </div>
+            <div className="home-float home-float-b">
+              <b>2</b>
+              <span>Open inquiries</span>
+            </div>
+          </div>
         </div>
       </section>
-      <div className="trust-strip studio-wrap">
-        <div>
-          <b>01</b>
-          <span>
-            Clarity before commitment<small>Scope and costs agreed before work starts</small>
-          </span>
-        </div>
-        <div>
-          <b>02</b>
-          <span>
-            Work you can review<small>See progress at agreed milestones</small>
-          </span>
-        </div>
-        <div>
-          <b>03</b>
-          <span>
-            Control after launch<small>Access, accounts and handover documented</small>
-          </span>
-        </div>
-      </div>
-      <section
-        id="services"
-        className="studio-section studio-wrap"
-        aria-labelledby="services-title"
-      >
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">01 / WHAT WE DO</p>
-            <h2 id="services-title">
-              A practical build.
-              <br />
-              <em>A clear deliverable.</em>
-            </h2>
+
+      <section className="home-section" aria-labelledby="services-title" id="services">
+        <div className="home-wrap">
+          <div className="home-head">
+            <h2 id="services-title">What we build</h2>
+            <Link href="/services">Services and terms →</Link>
           </div>
-          <p>
-            From your first website to the tool your team uses every day. We build digital
-            experiences with a job to do.
-          </p>
-        </div>
-        <p className="mb-6">
-          <Link className="studio-text-link" href="/services">
-            View service deliverables and project terms ↗
-          </Link>
-        </p>
-        <div className="service-grid">
-          {services.map((s) => (
-            <article className="service-card" key={s.n}>
-              <div className="service-card-top">
-                <span className="service-icon" aria-hidden="true">
+          <ul className="home-cards">
+            {services.map((s) => (
+              <li key={s.name}>
+                <span className="home-icon" aria-hidden="true">
                   {s.icon}
                 </span>
-                <span>{s.n}</span>
-              </div>
-              <h3>{s.name}</h3>
-              <p>{s.text}</p>
-              <ul>
-                {s.tags.map((t) => (
-                  <li key={t}>{t}</li>
-                ))}
-              </ul>
-              <Link href={`/contact?service=${s.type}#project-brief`}>
-                Let’s talk<span className="sr-only"> about {s.name.toLowerCase()}</span>{' '}
-                <span aria-hidden="true">↗</span>
-              </Link>
-            </article>
-          ))}
-        </div>
-      </section>
-      <section id="work" className="work-section" aria-labelledby="work-title">
-        <div className="studio-wrap">
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow">02 / FROM OUR WORKSHOP</p>
-              <h2 id="work-title">
-                Inspect the product.
-                <br />
-                <em>See how we build.</em>
-              </h2>
-            </div>
-            <p>
-              Meet OpenEstate. Our open-source product brings real estate workflows together, from
-              the first inquiry to post-sales operations.
-            </p>
-          </div>
-          <div className="work-meta">
-            <div>
-              <span className="project-mark">OE</span>
-              <div>
-                <h3>OpenEstate</h3>
-                <p>REAL ESTATE OPERATIONS SOFTWARE</p>
-              </div>
-            </div>
-            <span className="project-label">OUR PRODUCT · OPEN SOURCE</span>
-          </div>
-          <OpenEstateShowcase />
-          <div className="work-bottom">
-            <div className="work-tags">
-              <span>Lead management</span>
-              <span>Bookings & collections</span>
-              <span>Reporting</span>
-            </div>
-            <Link href="/products/openestate" className="studio-text-link">
-              Explore OpenEstate <span>↗</span>
-            </Link>
-          </div>
-        </div>
-      </section>
-      <section id="demo" className="studio-section studio-wrap" aria-labelledby="demo-title">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">03 / TRY IT YOURSELF</p>
-            <h2 id="demo-title">
-              Don’t just look.
-              <br />
-              <em>Tap around.</em>
-            </h2>
-          </div>
-          <p>
-            A real mobile app we designed, running right here. Pick a screen or use it like any
-            other app on your phone.
-          </p>
-        </div>
-        <AppDemo id="home-demo" />
-        <p className="mt-8">
-          <Link className="studio-text-link" href="/work">
-            See everything inside this app <span>↗</span>
-          </Link>
-        </p>
-      </section>
-      <section className="studio-section studio-wrap" aria-labelledby="process-title">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow">04 / SIMPLE BY DESIGN</p>
-            <h2 id="process-title">
-              Know what happens
-              <br />
-              <em>before you start.</em>
-            </h2>
-          </div>
-          <p>You bring the idea. We bring the questions, the craft and a plan you can follow.</p>
-        </div>
-        <ol className="process-grid">
-          {[
-            [
-              'Let’s understand.',
-              'Bring your goals, reference sites and current workflow. We identify requirements, dependencies and the right scope.',
-            ],
-            [
-              'Make a plan.',
-              'Review a written scope, deliverables, review milestones, costs and payment terms. Approve the proposal before development starts.',
-            ],
-            [
-              'Build it together.',
-              'Review working previews at agreed milestones. Feedback and changes are recorded so everyone knows what comes next.',
-            ],
-            [
-              'Launch with confidence.',
-              'Review the agreed deliverables, complete launch checks and receive account access and handover notes. Agree support separately.',
-            ],
-          ].map(([title, text], i) => (
-            <li key={title}>
-              <span>
-                0{i + 1} <i aria-hidden="true">↗</i>
-              </span>
-              <h3>{title}</h3>
-              <p>{text}</p>
-            </li>
-          ))}
-        </ol>
-      </section>
-      <section className="hosting-section studio-wrap" aria-labelledby="hosting-title">
-        <div className="hosting-art" aria-hidden="true">
-          <span>↗</span>
-          <i>
-            YOUR WEBSITE
-            <br />
-            YOUR ACCOUNT
-            <br />
-            YOUR CONTROL
-          </i>
-        </div>
-        <div>
-          <p className="eyebrow">LESS FRICTION. MORE OWNERSHIP.</p>
-          <h2 id="hosting-title">
-            Built for you.
-            <br />
-            Owned by you.
-          </h2>
-          <p>
-            Hosting setup is included with our website projects. We help you select a suitable plan
-            and launch in an account you own.
-          </p>
-          <ul>
-            <li>Domain and hosting under your control</li>
-            <li>Clear handover and access to your website</li>
-            <li>Hosting costs agreed before launch</li>
+                <h3>{s.name}</h3>
+                <p>{s.text}</p>
+                <Link href={s.href}>
+                  Let’s talk<span className="sr-only"> about {s.name.toLowerCase()}</span>{' '}
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </li>
+            ))}
           </ul>
-          <small>
-            Hosting subscriptions, domains, email and ongoing maintenance are quoted separately. Any
-            recurring costs are agreed before you commit.
-          </small>
         </div>
       </section>
-      <section className="studio-section studio-wrap faq-section" aria-labelledby="faq-title">
-        <div>
-          <p className="eyebrow">A FEW THINGS YOU MIGHT ASK</p>
-          <h2 id="faq-title">
-            Good questions.
-            <br />
-            <em>Clear answers.</em>
-          </h2>
-        </div>
-        <div className="faq-list">
-          {[
-            [
-              'What can you build for my business?',
-              'Business websites, web applications, dashboards and custom workflow tools. Tell us what you need to accomplish and we’ll work out an appropriate scope.',
-            ],
-            [
-              'How much will my project cost?',
-              'Every project starts with a conversation. We provide a proposal covering the agreed scope, deliverables, timeline and costs before work begins.',
-            ],
-            [
-              'Is hosting free?',
-              'Hosting setup is included. The hosting plan itself depends on your project and its commercial requirements. We agree any recurring costs with you before launch.',
-            ],
-            [
-              'Can you adapt OpenEstate for our workflow?',
-              'We can discuss your requirements and what an implementation would involve. OpenEstate is open source under AGPL-3.0; its current capabilities and limitations are documented on the product page.',
-            ],
-          ].map(([q, a]) => (
-            <details key={q}>
-              <summary>
-                {q}
-                <span aria-hidden="true">+</span>
-              </summary>
-              <p>{a}</p>
-            </details>
-          ))}
-        </div>
-      </section>
-      <section className="studio-cta" aria-labelledby="cta-title">
-        <div className="studio-wrap">
-          <p className="eyebrow">HAVE SOMETHING IN MIND?</p>
-          <h2 id="cta-title">
-            Start with a brief.
-            <br />
-            <em>Leave with a plan.</em>
-            <span aria-hidden="true">↗</span>
-          </h2>
-          <div>
-            <p>
-              Tell us your goals, timeline and the problem you want to solve.
-              <br />
-              We’ll discuss feasibility, scope and the next step.
-            </p>
-            <Link href="/contact#project-brief" className="studio-button">
-              Discuss your project <span>↗</span>
+
+      <section className="home-section home-section-tint" aria-labelledby="work-title" id="work">
+        <div className="home-wrap">
+          <div className="home-head">
+            <h2 id="work-title">Our work</h2>
+            <Link href="/work">All work →</Link>
+          </div>
+          <div className="home-work">
+            <Link href="/work" className="home-work-card">
+              <div className="home-work-media">
+                <Image
+                  src="/demos/aurelia/images/solstice-grove.webp"
+                  alt=""
+                  width={1080}
+                  height={720}
+                  sizes="(max-width: 800px) 100vw, 50vw"
+                />
+                <span className="home-badge">Live demo</span>
+              </div>
+              <div className="home-work-body">
+                <small>Mobile app · Real estate</small>
+                <h3>Aurelia Estates owner app</h3>
+                <p>Holdings, project pages, QR visitor passes and owner support in one app.</p>
+                <span className="home-more">Try it now →</span>
+              </div>
+            </Link>
+            <Link href="/products/openestate" className="home-work-card">
+              <div className="home-work-media home-oe">
+                <div className="home-oe-panel" aria-hidden="true">
+                  <b>Dashboard</b>
+                  <div>
+                    <span>
+                      <i>2</i>Open inquiries
+                    </span>
+                    <span>
+                      <i>0</i>Overdue
+                    </span>
+                    <span>
+                      <i>₹</i>Collections
+                    </span>
+                  </div>
+                </div>
+                <span className="home-badge">Open source</span>
+              </div>
+              <div className="home-work-body">
+                <small>Web application · Our product</small>
+                <h3>OpenEstate</h3>
+                <p>Real estate operations: leads, inventory, bookings, collections and portals.</p>
+                <span className="home-more">Explore the product →</span>
+              </div>
             </Link>
           </div>
+        </div>
+      </section>
+
+      <section className="home-section" aria-labelledby="process-title">
+        <div className="home-wrap">
+          <div className="home-head">
+            <h2 id="process-title">How we work</h2>
+          </div>
+          <ol className="home-steps">
+            {steps.map(([t, d], i) => (
+              <li key={t}>
+                <span>0{i + 1}</span>
+                <h3>{t}</h3>
+                <p>{d}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="home-cta" aria-labelledby="cta-title">
+        <div className="home-wrap">
+          <div>
+            <h2 id="cta-title">Have a project in mind?</h2>
+            <p>Send a short brief. We’ll reply with questions, a scope and a plan.</p>
+          </div>
+          <Link className="home-btn" href="/contact#project-brief">
+            Discuss your project <span aria-hidden="true">→</span>
+          </Link>
         </div>
       </section>
     </div>

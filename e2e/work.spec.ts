@@ -31,11 +31,11 @@ test('demo assets are optimised and self-contained', async ({ request }) => {
   expect(html).toContain('<meta name="robots" content="noindex">');
 });
 
-test('home links to the live demo and the work page', async ({ page }) => {
+test('home work card opens the live demo', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('#demo iframe')).toHaveAttribute('src', /\/demos\/aurelia\//);
-  await page.getByRole('link', { name: /See everything inside this app/ }).click();
+  await page.getByRole('link', { name: /Aurelia Estates owner app/ }).click();
   await expect(page).toHaveURL(/\/work$/);
+  await expect(page.locator('iframe[title^="Aurelia Estates"]')).toBeVisible();
 });
 
 test('contact API validates input and reports when mail is not configured', async ({ request }) => {

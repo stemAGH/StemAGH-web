@@ -19,9 +19,8 @@ async function openNav(page: Page, isMobile: boolean) {
 test('homepage shows hero, featured product and shared navigation', async ({ page, isMobile }) => {
   await page.goto('/');
   await expect(page).toHaveTitle(/StemAGH/);
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Built around');
-  await expect(page.getByRole('heading', { level: 2, name: /Inspect the product/ })).toBeVisible();
-  await expect(page.getByRole('heading', { level: 2, name: /Don’t just look/ })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Software built around');
+  await expect(page.getByRole('heading', { level: 3, name: 'OpenEstate' })).toBeVisible();
 
   const nav = await openNav(page, isMobile);
   await expect(nav.getByRole('link', { name: 'Products', exact: true })).toBeVisible();
@@ -33,7 +32,7 @@ test('product data is shared: homepage card, portfolio and detail agree', async 
   await page.goto('/');
   await page
     .getByRole('main')
-    .getByRole('link', { name: /Explore OpenEstate/ })
+    .getByRole('link', { name: /Explore the product/ })
     .first()
     .click();
   await expect(page).toHaveURL(/\/products\/openestate$/);
