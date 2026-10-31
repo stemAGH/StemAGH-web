@@ -52,6 +52,23 @@ export function validateEnquiry(input: unknown): Enquiry | string {
   return out;
 }
 
+export const subjectFor = (e: Enquiry) => `Project enquiry: ${e.service} (${e.name})`;
+
+/** FormSubmit payload: one labelled row per field in the email it sends. */
+export const formSubmitFields = (e: Enquiry) => ({
+  _subject: subjectFor(e),
+  _replyto: e.email,
+  _template: 'table',
+  _captcha: 'false',
+  Name: e.name,
+  Email: e.email,
+  Company: e.company || '-',
+  'Project type': e.service,
+  Budget: e.budget || 'To discuss',
+  Timeline: e.timeline || 'To discuss',
+  Brief: e.brief,
+});
+
 export function enquiryText(e: Enquiry) {
   return [
     `Name: ${e.name}`,

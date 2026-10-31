@@ -72,6 +72,39 @@ test('contact form shows success when the enquiry is accepted', async ({ page })
   await expect(page.getByRole('status')).toContainText('Thanks, Asha. Your brief is with us.');
 });
 
+for (const [label, success, expected] of [
+  ['delivers through FormSubmit from the browser', 'true', 'Thanks, Asha'],
+  ['falls back to an email draft if FormSubmit refuses', 'false', 'nothing has been lost'],
+] as const) {
+  test(`contact form ${label}`, async ({ page }) => {
+    await page.route('**/api/contact', (r) =>
+      r.fulfill({ json: { relay: 'formsubmit', to: 'inbox@example.org' } }),
+    );
+    let posted: Record<string, string> | undefined;
+    await page.route('https://formsubmit.co/**', (r) => {
+      posted = r.request().postDataJSON();
+      expect(r.request().url()).toBe('https://formsubmit.co/ajax/inbox%40example.org');
+      return r.fulfill({
+        json: { success, message: 'x' },
+        headers: { 'access-control-allow-origin': '*' },
+      });
+    });
+    await page.goto('/contact');
+    const form = page.locator('#project-brief form');
+    await form.getByLabel('Your name', { exact: true }).fill('Asha Rao');
+    await form.getByLabel('Email address', { exact: true }).fill('asha@example.org');
+    await form.getByLabel('What would you like to achieve?').fill('An owner app for our township.');
+    await form.getByRole('button', { name: /Send project brief/ }).click();
+    await expect(page.locator('#project-brief')).toContainText(expected);
+    expect(posted).toMatchObject({
+      Name: 'Asha Rao',
+      Email: 'asha@example.org',
+      _replyto: 'asha@example.org',
+      Brief: 'An owner app for our township.',
+    });
+  });
+}
+
 test('privacy notice describes the form, demos and hosting', async ({ page }) => {
   await page.goto('/privacy');
   await expect(page.getByRole('heading', { level: 1, name: 'Privacy notice' })).toBeVisible();

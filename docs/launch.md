@@ -123,8 +123,9 @@ Nothing is committed yet. `.gitignore` excludes `.env*` (except `.env.example`),
 `contact@stemagh.com` is configured in `src/content/site.ts` and shown on `/contact` and in the
 footer of every page. The owner has confirmed it works; this project has not verified that.
 
-The project brief on `/contact` posts to `/api/contact`, which emails the enquiry to
-`contact@stemagh.com` through FormSubmit (formsubmit.co): no account, no key. The first enquiry
+The project brief on `/contact` posts to `/api/contact` (validation and spam traps), then the
+visitor's browser relays it to `contact@stemagh.com` through FormSubmit (formsubmit.co): no
+account, no key. FormSubmit rejects server-side posts (403 from Vercel), hence the browser relay. The first enquiry
 makes FormSubmit send a one-time activation email to that inbox; click it, and every later
 enquiry arrives as a formatted email with reply-to set to the visitor. Until activation (or if
 FormSubmit is down) the visitor is offered a prepared email draft instead, so nothing is lost.

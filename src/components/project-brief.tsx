@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import {
   enquiryText,
+  formSubmitFields,
   limits,
   serviceFromQuery,
   services,
@@ -53,8 +54,21 @@ export function ProjectBrief() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...enquiry, hp: data.hp, startedAt: startedAt.current }),
       });
-      if (res.ok)
-        return setState({ kind: 'sent', name: enquiry.name.split(' ')[0] ?? enquiry.name });
+      const sent = () =>
+        setState({ kind: 'sent', name: enquiry.name.split(' ')[0] ?? enquiry.name });
+      if (res.ok) {
+        const reply = (await res.json()) as { relay?: string; to?: string };
+        if (reply.relay !== 'formsubmit' || !reply.to) return sent();
+        // FormSubmit only accepts posts from the visitor's browser, so relay from here.
+        const fs = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(reply.to)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(formSubmitFields(enquiry)),
+        });
+        const out = (await fs.json().catch(() => ({}))) as { success?: string | boolean };
+        if (fs.ok && String(out.success) === 'true') return sent();
+        return setState({ kind: 'fallback', mailto: mailtoFor(enquiry), reason: 'failed' });
+      }
       if (res.status === 422) {
         const { error } = await res.json();
         return setState({ kind: 'invalid', message: error });
