@@ -8,10 +8,12 @@ test.skip(!SITE, 'set SITE_URL to verify production metadata');
 const pages = [
   ['/', SITE],
   ['/services', `${SITE}/services`],
+  ['/work', `${SITE}/work`],
   ['/products', `${SITE}/products`],
   ['/products/openestate', `${SITE}/products/openestate`],
   ['/about', `${SITE}/about`],
   ['/contact', `${SITE}/contact`],
+  ['/privacy', `${SITE}/privacy`],
 ] as const;
 
 for (const [path, url] of pages) {
@@ -29,7 +31,7 @@ for (const [path, url] of pages) {
   });
 }
 
-test('sitemap lists all six public pages, robots points at it', async ({ request }) => {
+test('sitemap lists every public page, robots points at it', async ({ request }) => {
   const sitemap = await (await request.get('/sitemap.xml')).text();
   const locs = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
   expect(locs).toEqual(pages.map(([, url]) => url));

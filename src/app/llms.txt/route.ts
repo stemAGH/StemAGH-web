@@ -13,6 +13,7 @@ ${services.map((s) => `- [${s.name}](${base}/services#${s.slug}): ${s.descriptio
 
 ## Main pages
 - [Services](${base}/services): Deliverables, project process, ownership and hosting terms.
+- [Work](${base}/work): An interactive demo of a mobile owner app built by StemAGH (illustrative data).
 - [OpenEstate](${base}/products/openestate): Current capabilities, limitations, AGPL-3.0 licence and self-hosting requirements.
 - [Products](${base}/products): Product portfolio.
 - [About](${base}/about): About StemAGH and its approach.
@@ -22,7 +23,7 @@ ${services.map((s) => `- [${s.name}](${base}/services#${s.slug}): ${s.descriptio
 - Scope, deliverables, milestones and costs are agreed before development starts.
 - Hosting setup is included with website projects. Hosting subscriptions, domains, email and maintenance are quoted separately.
 - Domain and hosting accounts remain under client control.
-- The project brief prepares an email; it does not submit or store an enquiry automatically.
+- The project brief on the contact page sends an enquiry to StemAGH by email; the website does not store it.
 - Product screenshots shown as illustrations are not customer results.
 - Contact: contact@stemagh.com
 

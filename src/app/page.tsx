@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ScrollExperience } from '@/components/scroll-experience';
 import { ServiceSlideshow } from '@/components/service-slideshow';
 import { OpenEstateShowcase } from '@/components/openestate-showcase';
+import { AppDemo } from '@/components/app-demo';
 import { site } from '@/content/site';
 import { openGraph } from '@/content/seo';
 
@@ -62,8 +63,8 @@ export default function HomePage() {
               <Link className="studio-button" href="/contact#project-brief">
                 Discuss your project <span>↗</span>
               </Link>
-              <a className="studio-text-link" href="#work">
-                See OpenEstate <span>↓</span>
+              <a className="studio-text-link" href="#demo">
+                Try a live demo <span>↓</span>
               </a>
             </div>
             <p className="hero-assurance">Defined scope. Review milestones. Accounts you own.</p>
@@ -135,11 +136,9 @@ export default function HomePage() {
                   <li key={t}>{t}</li>
                 ))}
               </ul>
-              <Link
-                href={`/contact?service=${s.type}`}
-                aria-label={`Discuss ${s.name.toLowerCase()}`}
-              >
-                Let’s talk <span>↗</span>
+              <Link href={`/contact?service=${s.type}#project-brief`}>
+                Let’s talk<span className="sr-only"> about {s.name.toLowerCase()}</span>{' '}
+                <span aria-hidden="true">↗</span>
               </Link>
             </article>
           ))}
@@ -184,10 +183,32 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <section id="demo" className="studio-section studio-wrap" aria-labelledby="demo-title">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">03 / TRY IT YOURSELF</p>
+            <h2 id="demo-title">
+              Don’t just look.
+              <br />
+              <em>Tap around.</em>
+            </h2>
+          </div>
+          <p>
+            A real mobile app we designed, running right here. Pick a screen or use it like any
+            other app on your phone.
+          </p>
+        </div>
+        <AppDemo id="home-demo" />
+        <p className="mt-8">
+          <Link className="studio-text-link" href="/work">
+            See everything inside this app <span>↗</span>
+          </Link>
+        </p>
+      </section>
       <section className="studio-section studio-wrap" aria-labelledby="process-title">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">03 / SIMPLE BY DESIGN</p>
+            <p className="eyebrow">04 / SIMPLE BY DESIGN</p>
             <h2 id="process-title">
               Know what happens
               <br />

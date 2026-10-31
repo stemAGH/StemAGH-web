@@ -10,7 +10,7 @@ async function nav(page: Page, isMobile: boolean) {
 test('About renders its heading, title and sections', async ({ page }) => {
   await page.goto('/about');
   await expect(page).toHaveTitle('About | StemAGH');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('software brand');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('built for real work');
   for (const name of ['One brand, many products', 'What exists today', 'The portfolio may grow']) {
     await expect(page.getByRole('heading', { level: 2, name })).toBeVisible();
   }
@@ -40,9 +40,11 @@ test('Contact renders, shows the owner-provided email, and lists verified channe
 }) => {
   await page.goto('/contact');
   await expect(page).toHaveTitle('Contact | StemAGH');
-  await expect(page.getByRole('heading', { level: 1, name: 'Get in touch' })).toBeVisible();
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Let’s build something.' }),
+  ).toBeVisible();
   await expect(page.getByText('has not published a general enquiry address')).toHaveCount(0);
-  const mail = page.locator('a[href^="mailto:"]');
+  const mail = page.getByRole('main').locator('a[href^="mailto:"]');
   await expect(mail).toHaveCount(1);
   await expect(mail).toHaveAttribute('href', 'mailto:contact@stemagh.com');
   await expect(mail).toHaveText('contact@stemagh.com');
@@ -58,9 +60,14 @@ test('Contact renders, shows the owner-provided email, and lists verified channe
   await expect(page.getByText('Do not open a public issue')).toBeVisible();
 });
 
-test('Contact has no form', async ({ page }) => {
+test('Contact form validates in the browser before sending', async ({ page }) => {
   await page.goto('/contact');
-  expect(await page.locator('form, input, textarea').count()).toBe(0);
+  const form = page.locator('#project-brief form');
+  await expect(form).toHaveCount(1);
+  await form.getByRole('button', { name: /Send project brief/ }).click();
+  // Native required-field validation stops the submit: nothing is posted.
+  await expect(form.getByLabel('Your name', { exact: true })).toBeFocused();
+  await expect(page.locator('#project-brief').getByRole('alert')).toHaveCount(0);
 });
 
 test('navigate between pages with the shared nav, active state follows', async ({
@@ -103,7 +110,7 @@ test('header and footer are the same shared markup on About and Contact', async 
   }
 });
 
-test('mobile menu on About lists all four links and Escape restores focus', async ({
+test('mobile menu on About lists all five links and Escape restores focus', async ({
   page,
   isMobile,
 }) => {
@@ -112,7 +119,7 @@ test('mobile menu on About lists all four links and Escape restores focus', asyn
   const button = page.locator('button[aria-controls="mobile-nav"]');
   await button.click();
   const menu = page.locator('#mobile-nav');
-  for (const l of ['Products', 'OpenEstate', 'About', 'Contact']) {
+  for (const l of ['Services', 'Work', 'Products', 'About', 'Contact']) {
     await expect(menu.getByRole('link', { name: l, exact: true })).toBeVisible();
   }
   await page.keyboard.press('Escape');
@@ -125,5 +132,5 @@ test('nav fits on one row at tablet width', async ({ page, isMobile }) => {
   await page.setViewportSize({ width: 768, height: 900 });
   await page.goto('/');
   const box = await page.getByRole('banner').boundingBox();
-  expect(box!.height).toBeLessThanOrEqual(65);
+  expect(box!.height).toBeLessThanOrEqual(81); // one 80px row, no wrapped second line
 });

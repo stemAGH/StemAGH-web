@@ -1,7 +1,15 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 
-const routes = ['/', '/products', '/products/openestate', '/about', '/contact'];
+const routes = [
+  '/',
+  '/work',
+  '/products',
+  '/products/openestate',
+  '/about',
+  '/contact',
+  '/privacy',
+];
 
 async function openNav(page: Page, isMobile: boolean) {
   if (isMobile) await page.locator('button[aria-controls="mobile-nav"]').click();
@@ -11,14 +19,13 @@ async function openNav(page: Page, isMobile: boolean) {
 test('homepage shows hero, featured product and shared navigation', async ({ page, isMobile }) => {
   await page.goto('/');
   await expect(page).toHaveTitle(/StemAGH/);
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Dependable software');
-  await expect(
-    page.getByRole('heading', { level: 2, name: /OpenEstate: an open-source CRM/ }),
-  ).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Built around');
+  await expect(page.getByRole('heading', { level: 2, name: /Inspect the product/ })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: /Don’t just look/ })).toBeVisible();
 
   const nav = await openNav(page, isMobile);
   await expect(nav.getByRole('link', { name: 'Products', exact: true })).toBeVisible();
-  await expect(nav.getByRole('link', { name: 'OpenEstate', exact: true })).toBeVisible();
+  await expect(nav.getByRole('link', { name: 'Work', exact: true })).toBeVisible();
   await expect(page.getByRole('contentinfo')).toBeVisible();
 });
 
@@ -26,7 +33,7 @@ test('product data is shared: homepage card, portfolio and detail agree', async 
   await page.goto('/');
   await page
     .getByRole('main')
-    .getByRole('link', { name: 'OpenEstate', exact: true })
+    .getByRole('link', { name: /Explore OpenEstate/ })
     .first()
     .click();
   await expect(page).toHaveURL(/\/products\/openestate$/);
@@ -41,11 +48,11 @@ test('product data is shared: homepage card, portfolio and detail agree', async 
 test('active navigation link is marked', async ({ page, isMobile }) => {
   await page.goto('/products/openestate');
   const nav = await openNav(page, isMobile);
-  await expect(nav.getByRole('link', { name: 'OpenEstate', exact: true })).toHaveAttribute(
+  await expect(nav.getByRole('link', { name: 'Products', exact: true })).toHaveAttribute(
     'aria-current',
     'page',
   );
-  await expect(nav.getByRole('link', { name: 'Products', exact: true })).not.toHaveAttribute(
+  await expect(nav.getByRole('link', { name: 'Work', exact: true })).not.toHaveAttribute(
     'aria-current',
   );
 });

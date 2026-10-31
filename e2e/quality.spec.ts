@@ -1,7 +1,15 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-const routes = ['/', '/products', '/products/openestate', '/about', '/contact'];
+const routes = [
+  '/',
+  '/work',
+  '/products',
+  '/products/openestate',
+  '/about',
+  '/contact',
+  '/privacy',
+];
 
 for (const route of routes) {
   test.describe(route, () => {
@@ -32,9 +40,12 @@ for (const route of routes) {
       for (let i = 0; i < visible + 3; i++) {
         await page.keyboard.press('Tab');
         const info = await page.evaluate(() => {
-          const el = document.activeElement as HTMLElement | null;
-          if (!el || el === document.body) return null;
-          const cs = getComputedStyle(el);
+          let el = document.activeElement as HTMLElement | null;
+          // Focus inside the demo iframe: the ring is drawn by the app on its own element.
+          if (el instanceof HTMLIFrameElement)
+            el = el.contentDocument?.activeElement as HTMLElement | null;
+          if (!el || el === document.body || el.tagName === 'BODY') return null;
+          const cs = el.ownerDocument.defaultView!.getComputedStyle(el);
           const r = el.getBoundingClientRect();
           return {
             id: `${el.tagName}|${el.getAttribute('href') ?? ''}|${el.textContent?.trim().slice(0, 30)}|${Math.round(r.x)},${Math.round(r.y)}`,
@@ -49,6 +60,8 @@ for (const route of routes) {
     });
 
     test('axe including best-practice rules finds nothing', async ({ page }) => {
+      // Reduced motion shows every section at once; otherwise axe measures text mid fade-in.
+      await page.emulateMedia({ reducedMotion: 'reduce' });
       await page.goto(route);
       const r = await new AxeBuilder({ page })
         .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'])

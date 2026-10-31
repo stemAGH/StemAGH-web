@@ -32,10 +32,9 @@ test('services, showcase, hosting terms and enquiry journey work', async ({ page
     .last()
     .click();
   await expect(page).toHaveURL(/\/contact#project-brief$/);
-  await expect(page.getByRole('link', { name: 'contact@stemagh.com' })).toHaveAttribute(
-    'href',
-    'mailto:contact@stemagh.com',
-  );
+  await expect(
+    page.getByRole('main').getByRole('link', { name: 'contact@stemagh.com' }),
+  ).toHaveAttribute('href', 'mailto:contact@stemagh.com');
 });
 
 test('slideshow controls and scroll progress respond to interaction', async ({ page }) => {
@@ -54,7 +53,7 @@ test('slideshow controls and scroll progress respond to interaction', async ({ p
     .not.toBe('matrix(0, 0, 0, 1, 0, 0)');
 });
 
-test('reduced motion stops autoplay and project brief prepares an unsent email', async ({
+test('reduced motion stops autoplay; with no mail service the brief falls back to an email draft', async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -67,8 +66,10 @@ test('reduced motion stops autoplay and project brief prepares an unsent email',
   await page
     .getByLabel('What would you like to achieve?')
     .fill('Build a website for our consulting business.');
-  await page.getByRole('button', { name: 'Prepare project email' }).click();
-  await expect(page.getByRole('status')).toContainText('Nothing has been sent yet.');
+  await page.getByRole('button', { name: /Send project brief/ }).click();
+  await expect(page.locator('#project-brief').getByRole('alert')).toContainText(
+    'nothing has been lost',
+  );
   const draft = page.getByRole('link', { name: 'Open email draft' });
   await expect(draft).toHaveAttribute('href', /^mailto:contact@stemagh.com/);
   expect(decodeURIComponent((await draft.getAttribute('href'))!)).toContain(

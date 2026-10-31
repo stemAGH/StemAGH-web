@@ -1,6 +1,14 @@
 import { expect, test } from '@playwright/test';
 
-const routes = ['/', '/products', '/products/openestate', '/about', '/contact'];
+const routes = [
+  '/',
+  '/work',
+  '/products',
+  '/products/openestate',
+  '/about',
+  '/contact',
+  '/privacy',
+];
 
 for (const route of routes) {
   test(`${route}: no cookies and no third-party requests`, async ({ page, context }) => {
@@ -15,17 +23,16 @@ for (const route of routes) {
     expect(await context.cookies()).toEqual([]);
   });
 
-  test(`${route}: brand mark in header and footer, enquiry email only where intended`, async ({
-    page,
-  }) => {
+  test(`${route}: logo in header, enquiry email and privacy link in footer`, async ({ page }) => {
     await page.goto(route);
-    for (const landmark of ['banner', 'contentinfo'] as const) {
-      const home = page.getByRole(landmark).getByRole('link', { name: 'StemAGH home' });
-      await expect(home.locator('svg[aria-hidden="true"]')).toHaveCount(1);
-      await expect(home).toContainText('StemAGH');
-    }
-    const html = await page.content();
-    expect(html.includes('contact@stemagh.com')).toBe(route === '/contact');
+    const home = page.getByRole('banner').getByRole('link', { name: 'StemAGH home' });
+    await expect(home.locator('img')).toHaveCount(1);
+    const footer = page.getByRole('contentinfo');
+    await expect(footer.getByRole('link', { name: 'contact@stemagh.com' })).toHaveAttribute(
+      'href',
+      'mailto:contact@stemagh.com',
+    );
+    await expect(footer.getByRole('link', { name: 'Privacy' })).toHaveAttribute('href', '/privacy');
   });
 }
 
