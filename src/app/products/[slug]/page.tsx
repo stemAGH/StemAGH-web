@@ -25,9 +25,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = getProduct(slug);
   if (!product) return {};
   return {
-    title: product.name,
+    title: product.seoTitle ?? product.name,
     description: product.summary,
-    openGraph: openGraph(`${product.name} | StemAGH`, product.summary, `/products/${product.slug}`),
+    openGraph: openGraph(
+      `${product.seoTitle ?? product.name} | StemAGH`,
+      product.summary,
+      `/products/${product.slug}`,
+    ),
   };
 }
 

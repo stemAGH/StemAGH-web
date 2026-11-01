@@ -22,9 +22,9 @@ for (const [path, url] of pages) {
     const attr = (sel: string, a: string) => page.locator(sel).first().getAttribute(a);
     expect(await attr('link[rel="canonical"]', 'href')).toBe(url);
     expect(await attr('meta[property="og:url"]', 'content')).toBe(url);
-    expect(await attr('meta[property="og:image"]', 'content')).toBe(`${SITE}/og.png`);
+    expect(await attr('meta[property="og:image"]', 'content')).toBe(`${SITE}/og.png?v=2`);
     expect(await attr('meta[name="twitter:card"]', 'content')).toBe('summary_large_image');
-    expect(await attr('meta[name="twitter:image"]', 'content')).toBe(`${SITE}/og.png`);
+    expect(await attr('meta[name="twitter:image"]', 'content')).toBe(`${SITE}/og.png?v=2`);
     expect(await attr('link[rel="apple-touch-icon"]', 'href')).toContain('/apple-icon.png');
     const html = await page.content();
     expect(html).not.toMatch(/localhost|example\.(com|test)|vercel\.app/i);
@@ -67,11 +67,14 @@ test('homepage primary content is available without JavaScript', async ({ browse
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
   await page.goto('http://localhost:3100/');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Built around');
-  await expect(page.getByRole('heading', { name: 'Websites that mean business.' })).toBeVisible();
-  await expect(page.getByRole('link', { name: /View service deliverables/ })).toHaveAttribute(
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Software built around');
+  await expect(page.getByRole('heading', { name: 'What we build' })).toBeVisible();
+  await expect(page.getByRole('link', { name: /Services and terms/ })).toHaveAttribute(
     'href',
     '/services',
   );
+  // Every page's header links the services page in its HTML (crawlers read markup, and on
+  // phones the nav is inside a closed menu).
+  expect(await page.locator('header a[href="/services"]').count()).toBeGreaterThan(0);
   await context.close();
 });

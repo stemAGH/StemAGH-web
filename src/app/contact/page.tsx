@@ -7,7 +7,8 @@ import { Section } from '@/components/section';
 import { featuredProduct } from '@/content/products';
 import { site } from '@/content/site';
 
-const description = 'Discuss a website, web application or custom software project with StemAGH.';
+const description =
+  'Tell StemAGH about your website, mobile app or custom software project. Send a short brief and we reply with next steps, scope and a written proposal.';
 
 export const metadata: Metadata = {
   title: 'Contact',

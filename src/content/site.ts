@@ -7,7 +7,7 @@ export const site = {
 };
 
 export const navLinks = [
-  { href: '/#services', label: 'Services', match: 'exact' },
+  { href: '/services', label: 'Services', match: 'exact' },
   { href: '/work', label: 'Work', match: 'exact' },
   { href: '/products', label: 'Products', match: 'prefix' },
   { href: '/about', label: 'About', match: 'exact' },

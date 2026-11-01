@@ -24,6 +24,8 @@ export type Product = {
   /** ISO date this entry was last checked against the product repository. Update with every review (docs/launch.md). */
   reviewedOn: string;
   category: string;
+  /** Search-result title, in words people actually type. Falls back to the name. */
+  seoTitle?: string;
   audience: string[];
   license?: string;
   model: DeliveryModel[];
@@ -80,6 +82,7 @@ export const products: Product[] = [
     version: 'v0.8.4',
     reviewedOn: '2026-10-17',
     category: 'Real-estate sales and operations',
+    seoTitle: 'OpenEstate: Open-Source Real Estate CRM',
     audience: [
       'Real-estate developers',
       'Channel-sales and broker-network teams',

@@ -24,7 +24,8 @@ export function openGraph(
       url: path === '/' ? siteUrl : `${siteUrl}${path}`,
       images: [
         {
-          url: '/og.png',
+          // Bump ?v= when the image changes: WhatsApp, LinkedIn and X cache it by URL.
+          url: '/og.png?v=2',
           width: 1200,
           height: 630,
           alt: 'StemAGH — websites, web applications and custom software',

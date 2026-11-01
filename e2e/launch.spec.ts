@@ -58,6 +58,7 @@ test('robots allows crawling and the sitemap lists no guessed URLs', async ({ re
   test.skip(!!process.env.SITE_URL, 'covered by production-seo.spec.ts');
   const robots = await (await request.get('/robots.txt')).text();
   expect(robots).toContain('Allow: /');
+  expect(robots).toContain('Disallow: /api/');
   expect(robots).not.toContain('Sitemap:');
   const sitemap = await (await request.get('/sitemap.xml')).text();
   expect(sitemap).not.toContain('<loc>');
@@ -65,6 +66,8 @@ test('robots allows crawling and the sitemap lists no guessed URLs', async ({ re
 
 test('product page shows when it was last checked', async ({ page }) => {
   await page.goto('/products/openestate');
+  // The search title carries the words people type, not just the product name.
+  await expect(page).toHaveTitle('OpenEstate: Open-Source Real Estate CRM | StemAGH');
   await expect(
     page.getByText(/Last checked against the OpenEstate repository on \d+ \w+ \d{4}/),
   ).toBeVisible();

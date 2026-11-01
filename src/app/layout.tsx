@@ -38,6 +38,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             name: site.name,
             description: site.description,
             ...(site.contactEmail && { email: site.contactEmail }),
+            sameAs: ['https://github.com/stemAGH'],
             ...(siteUrl && {
               '@id': `${siteUrl}/#organization`,
               url: siteUrl,
