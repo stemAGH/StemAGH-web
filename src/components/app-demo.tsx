@@ -44,8 +44,9 @@ export function AppDemo({
         <p className="eyebrow">LIVE DEMO · TAP AROUND</p>
         <Heading>Aurelia Estates owner app</Heading>
         <p>
-          A mobile owner app we designed for property developers: holdings and plot values, project
-          pages, support requests, QR visitor passes, referrals and a guided assistant.
+          A phone app we designed for property developers’ owners: holdings and plot values, project
+          pages, support requests, QR visitor passes, referrals and a guided assistant. This preview
+          runs the app’s screens in your browser, with nothing to install.
         </p>
         <ul className="app-demo-screens" aria-label="Jump to a screen">
           {screens.map(([hash, title, text]) => (

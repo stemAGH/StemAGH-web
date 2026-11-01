@@ -21,18 +21,25 @@ type State =
 const mailtoFor = (e: Enquiry) =>
   `mailto:${site.contactEmail}?subject=${encodeURIComponent(`Project enquiry: ${e.service}`)}&body=${encodeURIComponent(enquiryText(e))}`;
 
-export function ProjectBrief() {
+/** `source` labels where the enquiry came from (shown in the email). */
+export function ProjectBrief({ source }: { source?: string } = {}) {
   const [state, setState] = useState<State>({ kind: 'idle' });
   const startedAt = useRef(0);
   const status = useRef<HTMLElement>(null);
   const serviceSelect = useRef<HTMLSelectElement>(null);
+  const companyInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     startedAt.current = Date.now();
     // Preselect from links like /contact?service=web. Set on the DOM, so the server render matches.
-    const q = new URLSearchParams(location.search).get('service');
+    const params = new URLSearchParams(location.search);
+    const q = params.get('service');
     if (q && serviceFromQuery[q] && serviceSelect.current)
       serviceSelect.current.value = serviceFromQuery[q];
+    // Links like /hello?company=Acme fill in the company, trimmed to the field's limit.
+    const company = params.get('company')?.trim().slice(0, limits.company);
+    if (company && companyInput.current && !companyInput.current.value)
+      companyInput.current.value = company;
   }, []);
 
   useEffect(() => {
@@ -147,7 +154,12 @@ export function ProjectBrief() {
           <div className="brief-row">
             <label>
               Company <span className="optional">(optional)</span>
-              <input name="company" autoComplete="organization" maxLength={limits.company} />
+              <input
+                name="company"
+                ref={companyInput}
+                autoComplete="organization"
+                maxLength={limits.company}
+              />
             </label>
             <label>
               What do you need?
@@ -189,6 +201,7 @@ export function ProjectBrief() {
               placeholder="Tell us about your business, goals and any features you need."
             />
           </label>
+          {source && <input type="hidden" name="source" value={source} />}
           <label className="hp" aria-hidden="true">
             Leave this empty
             <input name="hp" tabIndex={-1} autoComplete="off" />

@@ -9,6 +9,7 @@ const routes = [
   '/about',
   '/contact',
   '/privacy',
+  '/hello',
 ];
 
 for (const route of routes) {

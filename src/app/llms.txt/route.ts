@@ -13,7 +13,7 @@ ${services.map((s) => `- [${s.name}](${base}/services#${s.slug}): ${s.descriptio
 
 ## Main pages
 - [Services](${base}/services): Deliverables, project process, ownership and hosting terms.
-- [Work](${base}/work): An interactive demo of a mobile owner app built by StemAGH (illustrative data).
+- [Work](${base}/work): An interactive preview of a phone app for property owners, built by StemAGH (illustrative data).
 - [OpenEstate](${base}/products/openestate): Current capabilities, limitations, AGPL-3.0 licence and self-hosting requirements.
 - [Products](${base}/products): Product portfolio.
 - [About](${base}/about): About StemAGH and its approach.

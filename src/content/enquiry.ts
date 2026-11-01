@@ -24,6 +24,8 @@ export const limits = {
   timeline: 120,
   budget: 60,
   brief: 3000,
+  /** Where the enquiry came from, e.g. the pitch page. Set by the page, not typed. */
+  source: 80,
 };
 type Field = keyof typeof limits;
 
@@ -66,6 +68,7 @@ export const formSubmitFields = (e: Enquiry) => ({
   'Project type': e.service,
   Budget: e.budget || 'To discuss',
   Timeline: e.timeline || 'To discuss',
+  ...(e.source && { Source: e.source }),
   Brief: e.brief,
 });
 
@@ -77,6 +80,7 @@ export function enquiryText(e: Enquiry) {
     `Project type: ${e.service}`,
     `Budget: ${e.budget || 'To discuss'}`,
     `Timeline: ${e.timeline || 'To discuss'}`,
+    ...(e.source ? [`Source: ${e.source}`] : []),
     '',
     e.brief,
   ].join('\n');

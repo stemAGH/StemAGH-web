@@ -5,7 +5,7 @@ import { openGraph } from '@/content/seo';
 
 const title = 'Our work and live demos';
 const description =
-  'Try apps StemAGH has built: an interactive mobile owner app for a property developer, and OpenEstate, our open-source real estate operations software.';
+  'Try apps StemAGH has built: an interactive preview of a phone app for a property developer’s owners, and OpenEstate, our open-source real estate operations software.';
 
 export const metadata: Metadata = {
   title,
@@ -14,7 +14,10 @@ export const metadata: Metadata = {
 };
 
 const built = [
-  ['Mobile-first web app', 'Installs nothing. Opens from a link on any phone.'],
+  [
+    'A real phone app',
+    'Built for owners to keep on their phones. This preview runs its screens in your browser.',
+  ],
   ['Six project pages', 'Search, filters, sorting, saved projects and visit preferences.'],
   ['QR visitor passes', 'Issue a pass, download its QR code, then scan it with the camera.'],
   ['Owner care', 'Support requests, read receipts, community updates and a guided assistant.'],
@@ -55,7 +58,7 @@ export default function WorkPage() {
               </h2>
             </div>
             <p>
-              An owner app designed for residential developers, to keep plot owners informed between
+              A phone app designed for residential developers, to keep plot owners informed between
               site visits. Records in this demo are illustrative.
             </p>
           </div>
