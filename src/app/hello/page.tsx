@@ -88,8 +88,8 @@ export default async function HelloPage({ searchParams }: Props) {
               Here’s what we could build for <span>{company || 'your business'}.</span>
             </h1>
             <p className="home-lead">
-              StemAGH is a website and software studio in Chennai and Gurugram. In two minutes you
-              can see what we make, try one of our apps, and tell us what you need.
+              StemAGH is a website and software studio working with businesses across India. In two
+              minutes you can see what we make, try one of our apps, and tell us what you need.
             </p>
             <div className="home-actions">
               <Link className="home-btn" href="#project-brief">

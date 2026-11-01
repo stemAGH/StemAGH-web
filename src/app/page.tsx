@@ -53,7 +53,7 @@ export default function HomePage() {
           <div className="home-hero-copy">
             <p className="home-kicker">
               <span className="home-dot" aria-hidden="true" />
-              Websites · Apps · Custom software · Chennai &amp; Gurugram
+              Websites · Apps · Custom software · Across India
             </p>
             <h1 id="hero-title">
               Software built around <span>your business.</span>

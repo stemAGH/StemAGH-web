@@ -40,12 +40,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             ...(site.contactEmail && { email: site.contactEmail }),
             sameAs: ['https://github.com/stemAGH'],
             areaServed: { '@type': 'Country', name: 'India' },
-            address: site.locations.map((l) => ({
-              '@type': 'PostalAddress',
-              addressLocality: l.city,
-              addressRegion: l.region,
-              addressCountry: 'IN',
-            })),
             ...(siteUrl && {
               '@id': `${siteUrl}/#organization`,
               url: siteUrl,

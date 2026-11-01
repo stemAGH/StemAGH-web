@@ -121,19 +121,18 @@ test('structured data is limited to verifiable facts', async ({ page }) => {
   }
 });
 
-test('organization data names India and both office cities', async ({ page }) => {
+test('organization serves all of India and publishes no office location', async ({ page }) => {
   await page.goto('/');
   const org = (await page.locator('script[type="application/ld+json"]').allTextContents())
     .map((raw) => JSON.parse(raw))
     .find((item) => item['@type'] === 'Organization');
   expect(org.areaServed).toEqual({ '@type': 'Country', name: 'India' });
-  expect(org.address.map((a: { addressLocality: string }) => a.addressLocality)).toEqual([
-    'Chennai',
-    'Gurugram',
-  ]);
-  await expect(page.getByRole('contentinfo')).toContainText(
-    'Chennai and Gurugram (Gurgaon), India',
-  );
+  expect(org).not.toHaveProperty('address');
+  await expect(page.getByRole('contentinfo')).toContainText('across India');
+  for (const path of ['/', '/hello', '/contact', '/llms.txt']) {
+    await page.goto(path);
+    expect(await page.content(), path).not.toMatch(/chennai|gurugram|gurgaon/i);
+  }
 });
 
 test('the icon request does not 404 (no stray /favicon.ico dependency)', async ({ page }) => {
