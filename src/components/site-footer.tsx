@@ -74,7 +74,7 @@ export function SiteFooter() {
       </Container>
       <div className="border-t border-white/10">
         <Container className="flex flex-col gap-3 py-6 text-sm text-[#b6c6e5] sm:flex-row sm:items-center sm:justify-between">
-          <p>&copy; {new Date().getFullYear()} StemAGH. Websites, web apps and custom software.</p>
+          <p>&copy; {new Date().getFullYear()} StemAGH. Websites, apps and custom software. Chennai and Gurugram (Gurgaon), India.</p>
           <ul className="flex gap-6">
             <li>
               <Link href="/privacy" className={linkCls}>

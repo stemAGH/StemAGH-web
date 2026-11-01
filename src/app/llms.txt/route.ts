@@ -20,6 +20,7 @@ ${services.map((s) => `- [${s.name}](${base}/services#${s.slug}): ${s.descriptio
 - [Contact](${base}/contact): Project enquiries and public support channels.
 
 ## Important details
+- Based in India, with offices in Chennai and Gurugram (Gurgaon). Works with businesses across India.
 - Scope, deliverables, milestones and costs are agreed before development starts.
 - Hosting setup is included with website projects. Hosting subscriptions, domains, email and maintenance are quoted separately.
 - Domain and hosting accounts remain under client control.

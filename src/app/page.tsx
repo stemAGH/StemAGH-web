@@ -6,9 +6,13 @@ import { openGraph } from '@/content/seo';
 import './home.css';
 
 export const metadata: Metadata = {
-  title: { absolute: 'Website Development & Custom Software | StemAGH' },
+  title: { absolute: 'Website, App & Custom Software Development in India | StemAGH' },
   description: site.description,
-  openGraph: openGraph('Website Development & Custom Software | StemAGH', site.description, '/'),
+  openGraph: openGraph(
+    'Website, App & Custom Software Development in India | StemAGH',
+    site.description,
+    '/',
+  ),
 };
 
 const services = [
@@ -45,7 +49,9 @@ export default function HomePage() {
       <section className="home-hero" aria-labelledby="hero-title">
         <div className="home-wrap home-hero-grid">
           <div>
-            <p className="home-kicker">Websites · Apps · Custom software</p>
+            <p className="home-kicker">
+              Websites · Apps · Custom software · Chennai &amp; Gurugram
+            </p>
             <h1 id="hero-title">
               Software built around <span>your business.</span>
             </h1>

@@ -5,7 +5,7 @@ import { openGraph, siteUrl } from '@/content/seo';
 import { services } from '@/content/services';
 const title = 'Website Development & Custom Software Services';
 const description =
-  'Explore StemAGH’s business website development, web applications, custom software and hosting setup. Review deliverables, ownership and the project process.';
+  'Business website development, web and mobile apps, custom software and hosting setup for companies across India. Review deliverables, ownership and the project process.';
 export const metadata: Metadata = {
   title,
   description,

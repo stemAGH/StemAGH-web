@@ -120,6 +120,21 @@ test('structured data is limited to verifiable facts', async ({ page }) => {
   }
 });
 
+test('organization data names India and both office cities', async ({ page }) => {
+  await page.goto('/');
+  const org = (await page.locator('script[type="application/ld+json"]').allTextContents())
+    .map((raw) => JSON.parse(raw))
+    .find((item) => item['@type'] === 'Organization');
+  expect(org.areaServed).toEqual({ '@type': 'Country', name: 'India' });
+  expect(org.address.map((a: { addressLocality: string }) => a.addressLocality)).toEqual([
+    'Chennai',
+    'Gurugram',
+  ]);
+  await expect(page.getByRole('contentinfo')).toContainText(
+    'Chennai and Gurugram (Gurgaon), India',
+  );
+});
+
 test('the icon request does not 404 (no stray /favicon.ico dependency)', async ({ page }) => {
   const failed: string[] = [];
   page.on('response', (r) => r.status() >= 400 && failed.push(`${r.status()} ${r.url()}`));
