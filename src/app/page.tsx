@@ -81,7 +81,7 @@ export default function HomePage() {
             <Phone className="home-phone-back" screens={['projects']} />
             <Phone
               className="home-phone-front"
-              screens={['home', 'support', 'referral']}
+              screens={['home', 'subscriptions', 'support']}
               priority
             />
             <div className="home-chip home-chip-a">
@@ -186,13 +186,13 @@ export default function HomePage() {
               <small>Phone app · Real estate</small>
               <h3>Aurelia Estates owner app</h3>
               <p>
-                Holdings and plot values, project pages, QR visitor passes, referrals and owner
-                support, in one calm app for a property developer’s customers.
+                Holdings and plot values, project pages, maintenance subscriptions, QR visitor
+                passes and owner support, in one calm app for a property developer’s customers.
               </p>
               <ul>
                 <li>Six project pages with search and filters</li>
                 <li>QR visitor passes, scanned at the gate</li>
-                <li>Support requests with read receipts</li>
+                <li>Maintenance plans, invoices and receipts</li>
               </ul>
               <span className="home-btn">
                 Try the live app <span aria-hidden="true">→</span>
@@ -201,7 +201,7 @@ export default function HomePage() {
             <div className="home-fan" aria-hidden="true">
               <Phone className="home-fan-l" screens={['projects']} />
               <Phone className="home-fan-c" screens={['home']} />
-              <Phone className="home-fan-r" screens={['referral']} />
+              <Phone className="home-fan-r" screens={['subscriptions']} />
             </div>
           </Link>
           <Link href="/products/openestate" className="home-oe reveal">

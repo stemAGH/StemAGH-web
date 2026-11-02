@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-export type Screen = 'home' | 'projects' | 'support' | 'referral';
+export type Screen = 'home' | 'projects' | 'support' | 'referral' | 'subscriptions';
 
 /**
  * A phone frame showing real screens captured from the Aurelia demo (public/showcase).

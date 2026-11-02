@@ -1,0 +1,36 @@
+const maintenanceStorage={getItem:key=>localStorage.getItem(key),setItem:(key,value)=>localStorage.setItem(key,value)};
+let maintenanceFilter='All';
+function maintenanceLink(){return `<a class="service-strip glass" href="#subscriptions">${icon('calendar')}<span><strong>Maintenance subscriptions</strong><small>Plans, dues & payment history</small></span><span>↗</span></a>`}
+function subscriptionsPage(){
+  const loaded=loadMaintenance(maintenanceStorage),totals=maintenanceTotals(loaded.payments),items=maintenanceInvoices.filter(i=>maintenanceFilter==='All'||maintenanceStatus(i,loaded.payments)===maintenanceFilter);
+  return back('#support')+intro('PROPERTY SERVICES','Care for your<br><em>little world.</em>','Your maintenance subscriptions, in one place.')+`
+    <section class="panel glass maintenance-summary"><p class="eyebrow">OUTSTANDING DUES</p><div class="value">${loaded.error?'Unavailable':money(totals.outstanding)}</div><p>${loaded.error?e(loaded.error):totals.overdue?money(totals.overdue)+' overdue · Please review your invoices.':'You are up to date with overdue invoices.'}</p><div class="row"><span>Monthly total</span><strong>${money(maintenancePlans.reduce((sum,p)=>sum+p.items.reduce((n,x)=>n+x[1],0),0))}</strong></div><p class="form-note">Sample billing records · Payments are simulated. No money is collected.</p></section>
+    <div class="section-head"><h2>Your subscriptions</h2><span class="tag">2 ACTIVE</span></div>
+    ${maintenancePlans.map(plan=>{const h=holdings.find(h=>h.id===plan.plot),p=projectById(h.project),amount=plan.items.reduce((sum,x)=>sum+x[1],0);return `<section class="panel glass maintenance-plan"><div class="row"><p class="eyebrow">${plan.plot} · ${plan.name.toUpperCase()}</p><span class="badge">Active</span></div><h2>${p.name}</h2><p class="maintenance-price">${money(amount)} <small>/ month</small></p><p class="muted">Billed monthly · Due on the 10th · Manual payment</p><details><summary>What your plan covers</summary><dl class="facts">${plan.items.map(([label,value])=>`<div><dt>${label}</dt><dd>${money(value)}</dd></div>`).join('')}</dl><p>Illustrative charges for community services. Automatic debit is not enabled.</p></details><a class="text-link" href="#invoice/MC-${plan.plot}-2026-11">View November invoice ↗</a></section>`}).join('')}
+    <div class="section-head"><h2>Invoices & history</h2></div><div class="filters" aria-label="Invoice status">${['All','Due','Overdue','Paid'].map(f=>`<button class="filter ${f===maintenanceFilter?'active':''}" data-action="maintenance-filter" data-id="${f}" aria-pressed="${f===maintenanceFilter}">${f}</button>`).join('')}</div>
+    <section class="panel glass request-list">${loaded.error?'<p role="alert">Invoice status is unavailable until saved records can be read.</p>':items.length?items.map(i=>{const status=maintenanceStatus(i,loaded.payments);return `<a class="request-row" href="#invoice/${i.id}"><div><strong>${maintenanceMonth(i.month)}</strong><small>${i.plot} · ${projectById(holdings.find(h=>h.id===i.plot).project).name}</small><small>Due ${i.due}</small></div><div class="maintenance-amount"><strong>${money(i.amount)}</strong><span class="badge ${status==='Overdue'?'overdue':status==='Paid'?'sold':''}">${status}</span></div></a>`}).join(''):'<div class="empty compact"><p>No invoices in this category.</p></div>'}</section>
+    <a class="service-strip glass" href="#support">${icon('chat')}<span><strong>A question about your bill?</strong><small>Contact owner care ↗</small></span></a>`;
+}
+function maintenanceInvoicePage(id){
+  const i=maintenanceInvoice(id);if(!i)return back('#subscriptions')+intro('MAINTENANCE','Invoice not found.');
+  const loaded=loadMaintenance(maintenanceStorage),plan=maintenancePlans.find(p=>p.plot===i.plot),status=maintenanceStatus(i,loaded.payments),paidAt=i.paidAt||loaded.payments.find(p=>p.invoice===id)?.paidAt;
+  return back('#subscriptions')+intro('MAINTENANCE INVOICE',maintenanceMonth(i.month),i.plot+' · '+projectById(holdings.find(h=>h.id===i.plot).project).name)+`<section class="panel glass"><div class="row"><span class="eyebrow">${i.id}</span><span class="badge ${status==='Overdue'?'overdue':''}">${loaded.error?'Unavailable':status}</span></div><div class="value">${money(i.amount)}</div><p>Due ${i.due} · ${plan.name}</p><dl class="facts">${plan.items.map(([label,value])=>`<div><dt>${label}</dt><dd>${money(value)}</dd></div>`).join('')}<div><dt>Total payable</dt><dd><strong>${money(i.amount)}</strong></dd></div></dl><p class="form-note">Sample invoice. Illustrative total; this is not a tax invoice.</p>${loaded.error?`<p role="alert">${e(loaded.error)}</p>`:paidAt?`<div class="maintenance-receipt"><p class="eyebrow">SAMPLE RECEIPT</p><h3>Payment recorded</h3><p>${e(localDay(new Date(paidAt)))} · ${money(i.amount)}</p><small>Reference: SIM-${i.id}</small><p class="form-note">No funds transferred. ${i.paidAt?'Illustrative historical record.':'Saved on this browser only.'}</p><button class="button secondary full" data-action="maintenance-receipt" data-id="${i.id}">Download sample receipt</button></div>`:`<button class="button full section-gap" data-action="maintenance-pay" data-id="${i.id}">Review payment · ${money(i.amount)}</button><p class="form-note section-gap">Test payment only. No card, bank or UPI details required.</p>`}</section>`;
+}
+document.addEventListener('click',event=>{
+  const button=event.target.closest('[data-action]');if(!button)return;const {action,id}=button.dataset;
+  if(action==='maintenance-filter'&&['All','Due','Overdue','Paid'].includes(id)){maintenanceFilter=id;render();return}
+  if(action==='maintenance-pay'){
+    const i=maintenanceInvoice(id),loaded=loadMaintenance(maintenanceStorage);if(!i)return;
+    if(loaded.error){notice(loaded.error);return}if(maintenanceStatus(i,loaded.payments)==='Paid'){render();return}
+    show(`<p class="eyebrow">MAINTENANCE COLLECTION</p><h2 id="detail-title">Review your payment</h2><p>${maintenanceMonth(i.month)} · Plot ${i.plot}</p><div class="value">${money(i.amount)}</div><p class="form-note section-gap">This is a simulated payment. No money will be charged. Completing it creates a sample receipt on this browser.</p><button class="button full section-gap" data-action="maintenance-confirm" data-id="${i.id}">Complete sample payment</button>`);return;
+  }
+  if(action==='maintenance-confirm'){
+    const result=settleMaintenance(maintenanceStorage,id);if(result.error){notice(result.error);return}dialog.close();render();notice('Sample payment saved. No money was charged.');return;
+  }
+  if(action==='maintenance-receipt'){
+    const i=maintenanceInvoice(id),loaded=loadMaintenance(maintenanceStorage);if(!i||loaded.error)return;
+    const paidAt=i.paidAt||loaded.payments.find(p=>p.invoice===id)?.paidAt;if(!paidAt)return;
+    const content=`AURELIA ESTATES — SAMPLE MAINTENANCE RECEIPT\n\nReference: SIM-${i.id}\nPlot: ${i.plot}\nPeriod: ${maintenanceMonth(i.month)}\nAmount: ${money(i.amount)}\nRecorded: ${localDay(new Date(paidAt))}\n\nSIMULATED RECORD. NO FUNDS TRANSFERRED. NOT A TAX RECEIPT.\n`;
+    const url=URL.createObjectURL(new Blob([content],{type:'text/plain;charset=utf-8'})),a=document.createElement('a');a.href=url;a.download='sample-receipt-'+i.id+'.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+});

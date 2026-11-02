@@ -22,7 +22,10 @@ const built = [
   ['QR visitor passes', 'Issue a pass, download its QR code, then scan it with the camera.'],
   ['Owner care', 'Support requests, read receipts, community updates and a guided assistant.'],
   ['Monthly photo journals', 'Construction progress shared with owners every month.'],
-  ['Privacy by design', 'No accounts needed for the demo; data stays on the device.'],
+  [
+    'Maintenance subscriptions',
+    'Monthly plans, invoices, overdue dues and downloadable receipts. Payments in the demo are simulated.',
+  ],
 ];
 
 export default function WorkPage() {

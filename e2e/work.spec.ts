@@ -21,6 +21,29 @@ test('work page demo is a real app the visitor can drive', async ({ page, isMobi
   await expect(app.getByText('Your world.')).toBeVisible();
 });
 
+test('maintenance subscriptions open in the demo, and reset clears their data', async ({
+  page,
+}) => {
+  const missing: string[] = [];
+  page.on('response', (r) => r.status() >= 400 && missing.push(`${r.status()} ${r.url()}`));
+  await page.goto('/work');
+  const app = page.frameLocator('iframe[title^="Aurelia Estates"]');
+  await expect(app.getByText('Your world.')).toBeVisible();
+  // The app links to subscriptions from its own home screen.
+  await app
+    .getByRole('link', { name: /Maintenance subscriptions/ })
+    .first()
+    .click();
+  await expect(app.locator('#view')).toContainText('Care for your');
+  await expect(app.locator('#view')).toContainText('Payments are simulated');
+  const frame = page.frame({ url: /demos\/aurelia/ })!;
+  await frame.evaluate(() => localStorage.setItem('aurelia-maintenance-v1', '{"payments":[]}'));
+  await page.getByRole('button', { name: 'Reset demo data' }).click();
+  await expect(app.getByText('Your world.')).toBeVisible();
+  expect(await page.evaluate(() => localStorage.getItem('aurelia-maintenance-v1'))).toBeNull();
+  expect(missing).toEqual([]);
+});
+
 test('demo assets are optimised and self-contained', async ({ request }) => {
   const img = await request.get('/demos/aurelia/images/willow-creek.webp');
   expect(img.status()).toBe(200);

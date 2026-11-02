@@ -2,12 +2,13 @@
 import { useRef, useState } from 'react';
 
 const SRC = '/demos/aurelia/index.html';
-const STORAGE_KEYS = ['aurelia-owner-v1', 'aurelia-passes-v1'];
+const STORAGE_KEYS = ['aurelia-owner-v1', 'aurelia-passes-v1', 'aurelia-maintenance-v1'];
 
 const screens = [
   ['#home', 'Owner home', 'Holdings, plot values and community updates'],
   ['#projects', 'Projects', 'Search, filter and open six project pages'],
   ['#support', 'Support', 'Raise requests and issue QR visitor passes'],
+  ['#subscriptions', 'Maintenance', 'Monthly plans, dues, invoices and receipts'],
   ['#referral', 'Referrals', 'Refer friends and track rewards'],
 ] as const;
 
@@ -45,8 +46,9 @@ export function AppDemo({
         <Heading>Aurelia Estates owner app</Heading>
         <p>
           A phone app we designed for property developers’ owners: holdings and plot values, project
-          pages, support requests, QR visitor passes, referrals and a guided assistant. This preview
-          runs the app’s screens in your browser, with nothing to install.
+          pages, maintenance subscriptions, support requests, QR visitor passes, referrals and a
+          guided assistant. This preview runs the app’s screens in your browser, with nothing to
+          install.
         </p>
         <ul className="app-demo-screens" aria-label="Jump to a screen">
           {screens.map(([hash, title, text]) => (
