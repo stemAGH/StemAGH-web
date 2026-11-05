@@ -1,15 +1,57 @@
-import { enquiryText, subjectFor, validateEnquiry } from '@/content/enquiry';
+import nodemailer from 'nodemailer';
+import { enquiryText, subjectFor, validateEnquiry, type Enquiry } from '@/content/enquiry';
 import { site } from '@/content/site';
 
 /*
- * Project enquiries, emailed to CONTACT_TO (default site.contactEmail).
- * - Resend sends from here when RESEND_API_KEY and CONTACT_FROM (verified sender) are set.
+ * Project enquiries, emailed to CONTACT_TO (default site.contactEmail). First match wins:
+ * - SMTP: SMTP_HOST + SMTP_USER + SMTP_PASS (e.g. the contact@ mailbox on Lark Mail). Sends from
+ *   our own mailbox, so no third party is involved. Preferred.
+ * - Resend: RESEND_API_KEY + CONTACT_FROM (a sender on a domain verified in Resend).
  * - Otherwise this route validates and answers { relay: 'formsubmit', to }, and the visitor's
- *   browser posts to FormSubmit, which refuses server-side requests (403 from Vercel).
+ *   browser posts to FormSubmit, which refuses server-side requests (403 from Vercel). A free
+ *   service with no guarantees: it has had outages (522 on 5 Nov 2026), so prefer SMTP.
  * CONTACT_DELIVERY=off (tests) answers 503 with no relay, so nothing is ever sent.
  */
 
 const json = (status: number, body: object) => Response.json(body, { status });
+
+async function sendSmtp(e: Enquiry, to: string) {
+  const port = Number(process.env.SMTP_PORT || 465);
+  const user = process.env.SMTP_USER!;
+  const transport = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port,
+    secure: port === 465,
+    auth: { user, pass: process.env.SMTP_PASS },
+    // Fail fast: a visitor is waiting, and the browser falls back to an email draft on error.
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 15_000,
+  });
+  await transport.sendMail({
+    from: process.env.CONTACT_FROM || `StemAGH website <${user}>`,
+    to,
+    replyTo: e.email,
+    subject: subjectFor(e),
+    text: enquiryText(e),
+  });
+}
+
+async function sendResend(e: Enquiry, to: string, key: string, from: string) {
+  const res = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      from,
+      to: [to],
+      reply_to: e.email,
+      subject: subjectFor(e),
+      text: enquiryText(e),
+    }),
+    signal: AbortSignal.timeout(15_000),
+  });
+  if (!res.ok) throw new Error(`resend ${res.status}`);
+}
 
 export async function POST(req: Request) {
   if (!req.headers.get('content-type')?.includes('application/json'))
@@ -33,23 +75,15 @@ export async function POST(req: Request) {
   const to = process.env.CONTACT_TO || site.contactEmail;
   if (!to || process.env.CONTACT_DELIVERY === 'off') return json(503, { error: 'not-configured' });
 
-  const key = process.env.RESEND_API_KEY;
-  const from = process.env.CONTACT_FROM;
-  if (!key || !from) return json(200, { relay: 'formsubmit', to });
-
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      from,
-      to: [to],
-      reply_to: enquiry.email,
-      subject: subjectFor(enquiry),
-      text: enquiryText(enquiry),
-    }),
-  }).catch(() => null);
-  if (!res?.ok) {
-    console.error('contact: resend failed', res?.status);
+  const { SMTP_HOST, SMTP_USER, SMTP_PASS, RESEND_API_KEY, CONTACT_FROM } = process.env;
+  try {
+    if (SMTP_HOST && SMTP_USER && SMTP_PASS) await sendSmtp(enquiry, to);
+    else if (RESEND_API_KEY && CONTACT_FROM)
+      await sendResend(enquiry, to, RESEND_API_KEY, CONTACT_FROM);
+    else return json(200, { relay: 'formsubmit', to });
+  } catch (err) {
+    // Never log the enquiry itself: it holds the visitor's personal details.
+    console.error('contact: send failed', (err as Error).message);
     return json(502, { error: 'send-failed' });
   }
   return json(200, { ok: true });

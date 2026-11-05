@@ -128,6 +128,27 @@ for (const [label, success, expected] of [
   });
 }
 
+test('a hung FormSubmit gives up and offers the email draft', async ({ page }) => {
+  test.setTimeout(45_000);
+  await page.route('**/api/contact', (r) =>
+    r.fulfill({ json: { relay: 'formsubmit', to: 'inbox@example.org' } }),
+  );
+  // Never answer, as during FormSubmit's outage.
+  await page.route('https://formsubmit.co/**', () => {});
+  await page.goto('/contact');
+  const form = page.locator('#project-brief form');
+  await form.getByLabel('Your name', { exact: true }).fill('Asha Rao');
+  await form.getByLabel('Email address', { exact: true }).fill('asha@example.org');
+  await form.getByLabel('What would you like to achieve?').fill('An owner app for our township.');
+  const started = Date.now();
+  await form.getByRole('button', { name: /Send project brief/ }).click();
+  await expect(page.locator('#project-brief')).toContainText('nothing has been lost', {
+    timeout: 25_000,
+  });
+  expect(Date.now() - started).toBeLessThan(20_000);
+  await expect(form.getByRole('button', { name: /Send project brief/ })).toBeEnabled();
+});
+
 test('privacy notice describes the form, demos and hosting', async ({ page }) => {
   await page.goto('/privacy');
   await expect(page.getByRole('heading', { level: 1, name: 'Privacy notice' })).toBeVisible();

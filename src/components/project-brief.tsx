@@ -60,6 +60,8 @@ export function ProjectBrief({ source }: { source?: string } = {}) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...enquiry, hp: data.hp, startedAt: startedAt.current }),
+        // The server's own mail timeouts end well before this.
+        signal: AbortSignal.timeout(40_000),
       });
       const sent = () =>
         setState({ kind: 'sent', name: enquiry.name.split(' ')[0] ?? enquiry.name });
@@ -71,6 +73,8 @@ export function ProjectBrief({ source }: { source?: string } = {}) {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify(formSubmitFields(enquiry)),
+          // FormSubmit has had outages where requests hang; don't keep the visitor waiting.
+          signal: AbortSignal.timeout(12_000),
         });
         const out = (await fs.json().catch(() => ({}))) as { success?: string | boolean };
         if (fs.ok && String(out.success) === 'true') return sent();

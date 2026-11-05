@@ -123,21 +123,29 @@ Nothing is committed yet. `.gitignore` excludes `.env*` (except `.env.example`),
 `contact@stemagh.com` is configured in `src/content/site.ts` and shown on `/contact` and in the
 footer of every page. The owner has confirmed it works; this project has not verified that.
 
-The project brief on `/contact` posts to `/api/contact` (validation and spam traps), then the
-visitor's browser relays it to `contact@stemagh.com` through FormSubmit (formsubmit.co): no
-account, no key. FormSubmit rejects server-side posts (403 from Vercel), hence the browser relay. The first enquiry
-makes FormSubmit send a one-time activation email to that inbox; click it, and every later
-enquiry arrives as a formatted email with reply-to set to the visitor. Until activation (or if
-FormSubmit is down) the visitor is offered a prepared email draft instead, so nothing is lost.
-To use Resend instead, set `RESEND_API_KEY` (secret) and `CONTACT_FROM` (see `.env.example`).
+The project brief on `/contact` (and `/hello`) posts to `/api/contact` (validation and spam
+traps), which sends it in the first way that is configured:
+
+1. **SMTP, from our own mailbox (recommended).** Set `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS` (secret)
+   and optionally `SMTP_PORT` (default 465) in Vercel's Production environment, then redeploy.
+   For Lark Mail: `SMTP_HOST=smtp.larksuite.com`, `SMTP_USER=contact@stemagh.com`, and an IMAP/SMTP
+   password created in Lark Mail settings (not the account password).
+2. **Resend:** `RESEND_API_KEY` (secret) and `CONTACT_FROM` on a domain verified in Resend.
+3. **FormSubmit (no settings):** the visitor's browser relays it through formsubmit.co; FormSubmit
+   rejects server-side posts. Needs a one-time activation link sent to the inbox. It is a free
+   service with no guarantees: on 5 November 2026 it was down (522 on every request), so every
+   enquiry fell back to the email draft. Use option 1.
+
+Each enquiry arrives with reply-to set to the visitor. If sending fails or FormSubmit does not
+answer within 12 seconds, the visitor is offered a prepared email draft, so nothing is lost.
 Spam protection is a hidden field plus a 3-second minimum; there is no rate limit yet.
 
 ## 6. Legal and privacy
 
 The site sets no cookies, runs no analytics, and loads no third-party scripts or fonts (the
 Playwright suite checks cookies and request hosts on every route). Since the enquiry form was
-added, `/privacy` describes what is actually processed: form fields sent to the owner's inbox via
-FormSubmit, demo data kept in the visitor's own browser, and Vercel's request logs. Update it whenever
+added, `/privacy` describes what is actually processed: form fields emailed to the owner's inbox (from
+the server by SMTP or Resend, or through FormSubmit as a backup), demo data kept in the visitor's own browser, and Vercel's request logs. Update it whenever
 any of that changes. Still the owner's to decide:
 
 - **Who is responsible for enquiries and for the site.** StemAGH is not a registered legal entity.
