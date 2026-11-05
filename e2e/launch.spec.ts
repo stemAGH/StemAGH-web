@@ -5,6 +5,7 @@ const routes = [
   '/work',
   '/products',
   '/products/openestate',
+  '/products/openestate/install',
   '/about',
   '/contact',
   '/privacy',

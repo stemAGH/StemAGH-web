@@ -39,7 +39,10 @@ export type Product = {
   links: {
     repo?: string;
     docs?: string;
+    /** Our own install page (internal path). */
     install?: string;
+    /** The same guide in the product repository. */
+    installSource?: string;
     changelog?: string;
     security?: string;
     issues?: string;
@@ -196,7 +199,8 @@ sudo ./install-native.sh \\
     links: {
       repo: REPO,
       docs: `${DOCS}/features-and-usage.md`,
-      install: `${DOCS}/installation.md`,
+      install: '/products/openestate/install',
+      installSource: `${DOCS}/installation.md`,
       changelog: `${REPO}/blob/master/CHANGELOG.md`,
       security: `${REPO}/blob/master/SECURITY.md`,
       issues: `${REPO}/issues`,

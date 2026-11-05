@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/work',
     '/products',
     ...products.map((p) => `/products/${p.slug}`),
+    '/products/openestate/install',
     '/about',
     '/contact',
     '/privacy',

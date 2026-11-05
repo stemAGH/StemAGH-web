@@ -253,6 +253,7 @@ export default async function ProductPage({ params }: Props) {
             ['Source repository', links.repo],
             ['Features and usage guide', links.docs],
             ['Installation guide', links.install],
+            ['Installation guide on GitHub', links.installSource],
             ['Changelog', links.changelog],
             ['Security policy', links.security],
             ['Issue tracker', links.issues],

@@ -11,6 +11,7 @@ const pages = [
   ['/work', `${SITE}/work`],
   ['/products', `${SITE}/products`],
   ['/products/openestate', `${SITE}/products/openestate`],
+  ['/products/openestate/install', `${SITE}/products/openestate/install`],
   ['/about', `${SITE}/about`],
   ['/contact', `${SITE}/contact`],
   ['/privacy', `${SITE}/privacy`],
