@@ -7,7 +7,7 @@ export const site = {
    * Public by design (Web3Forms only accepts browser submissions), so it lives here, not in a
    * secret. Get one at web3forms.com for contact@stemagh.com. Empty: the form offers an email draft.
    */
-  web3formsKey: '' as string,
+  web3formsKey: 'f0e79503-fe55-41bf-a872-d86c35157885' as string,
   description:
     'StemAGH designs and builds business websites, mobile apps and custom software for companies across India.',
 };
