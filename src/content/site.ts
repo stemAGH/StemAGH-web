@@ -2,6 +2,12 @@ export const site = {
   /** General enquiry address. Provided by the owner. Set to undefined to fall back to the "no address yet" note on /contact. */
   contactEmail: 'contact@stemagh.com' as string | undefined,
   name: 'StemAGH',
+  /**
+   * Web3Forms access key for the enquiry form; it decides which inbox receives enquiries.
+   * Public by design (Web3Forms only accepts browser submissions), so it lives here, not in a
+   * secret. Get one at web3forms.com for contact@stemagh.com. Empty: the form offers an email draft.
+   */
+  web3formsKey: '' as string,
   description:
     'StemAGH designs and builds business websites, mobile apps and custom software for companies across India.',
 };

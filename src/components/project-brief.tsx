@@ -2,11 +2,11 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import {
   enquiryText,
-  formSubmitFields,
   limits,
   serviceFromQuery,
   services,
   validateEnquiry,
+  web3formsFields,
   type Enquiry,
 } from '@/content/enquiry';
 import { site } from '@/content/site';
@@ -66,18 +66,18 @@ export function ProjectBrief({ source }: { source?: string } = {}) {
       const sent = () =>
         setState({ kind: 'sent', name: enquiry.name.split(' ')[0] ?? enquiry.name });
       if (res.ok) {
-        const reply = (await res.json()) as { relay?: string; to?: string };
-        if (reply.relay !== 'formsubmit' || !reply.to) return sent();
-        // FormSubmit only accepts posts from the visitor's browser, so relay from here.
-        const fs = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(reply.to)}`, {
+        const reply = (await res.json()) as { relay?: string; key?: string };
+        if (reply.relay !== 'web3forms' || !reply.key) return sent();
+        // Web3Forms' free plan only accepts posts from the visitor's browser, so relay from here.
+        const relay = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify(formSubmitFields(enquiry)),
-          // FormSubmit has had outages where requests hang; don't keep the visitor waiting.
+          body: JSON.stringify(web3formsFields(enquiry, reply.key)),
+          // A relay can be down or hang; don't keep the visitor waiting.
           signal: AbortSignal.timeout(12_000),
         });
-        const out = (await fs.json().catch(() => ({}))) as { success?: string | boolean };
-        if (fs.ok && String(out.success) === 'true') return sent();
+        const out = (await relay.json().catch(() => ({}))) as { success?: boolean };
+        if (relay.ok && out.success === true) return sent();
         return setState({ kind: 'fallback', mailto: mailtoFor(enquiry), reason: 'failed' });
       }
       if (res.status === 422) {

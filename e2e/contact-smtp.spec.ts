@@ -120,7 +120,7 @@ test.describe('contact route over SMTP', () => {
     expect(logged.join('\n')).not.toContain('asha@example.org');
     expect(logged.join('\n')).not.toContain('pw-marker-7731');
   });
-  test('half-configured SMTP says so instead of quietly using FormSubmit', async () => {
+  test('half-configured SMTP says so instead of quietly using the relay', async () => {
     Object.assign(process.env, { SMTP_HOST: '127.0.0.1', SMTP_USER: 'contact@example.org' });
     delete process.env.SMTP_PASS;
     delete process.env.CONTACT_DELIVERY;
@@ -135,5 +135,17 @@ test.describe('contact route over SMTP', () => {
       console.error = orig;
     }
     expect(logged.join(' ')).toContain('missing SMTP_PASS');
+  });
+
+  test('with no server sender, the browser is handed the Web3Forms key', async () => {
+    for (const k of ['SMTP_HOST', 'SMTP_USER', 'SMTP_PASS', 'RESEND_API_KEY', 'CONTACT_DELIVERY'])
+      delete process.env[k];
+    process.env.WEB3FORMS_KEY = '11111111-2222-3333-4444-555555555555';
+    const res = await post();
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({
+      relay: 'web3forms',
+      key: '11111111-2222-3333-4444-555555555555',
+    });
   });
 });

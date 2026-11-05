@@ -95,19 +95,21 @@ test('contact form shows success when the enquiry is accepted', async ({ page })
   await expect(page.getByRole('status')).toContainText('Thanks, Asha. Your brief is with us.');
 });
 
-for (const [label, success, expected] of [
-  ['delivers through FormSubmit from the browser', 'true', 'Thanks, Asha'],
-  ['falls back to an email draft if FormSubmit refuses', 'false', 'nothing has been lost'],
+const KEY = '11111111-2222-3333-4444-555555555555';
+for (const [label, status, success, expected] of [
+  ['delivers through Web3Forms from the browser', 200, true, 'Thanks, Asha'],
+  ['falls back to an email draft if Web3Forms refuses', 400, false, 'nothing has been lost'],
 ] as const) {
   test(`contact form ${label}`, async ({ page }) => {
     await page.route('**/api/contact', (r) =>
-      r.fulfill({ json: { relay: 'formsubmit', to: 'inbox@example.org' } }),
+      r.fulfill({ json: { relay: 'web3forms', key: KEY } }),
     );
     let posted: Record<string, string> | undefined;
-    await page.route('https://formsubmit.co/**', (r) => {
+    await page.route('https://api.web3forms.com/**', (r) => {
       posted = r.request().postDataJSON();
-      expect(r.request().url()).toBe('https://formsubmit.co/ajax/inbox%40example.org');
+      expect(r.request().url()).toBe('https://api.web3forms.com/submit');
       return r.fulfill({
+        status,
         json: { success, message: 'x' },
         headers: { 'access-control-allow-origin': '*' },
       });
@@ -120,21 +122,20 @@ for (const [label, success, expected] of [
     await form.getByRole('button', { name: /Send project brief/ }).click();
     await expect(page.locator('#project-brief')).toContainText(expected);
     expect(posted).toMatchObject({
+      access_key: KEY,
+      email: 'asha@example.org',
+      subject: 'Project enquiry: Business website (Asha Rao)',
       Name: 'Asha Rao',
-      Email: 'asha@example.org',
-      _replyto: 'asha@example.org',
       Brief: 'An owner app for our township.',
     });
   });
 }
 
-test('a hung FormSubmit gives up and offers the email draft', async ({ page }) => {
+test('a hung relay gives up and offers the email draft', async ({ page }) => {
   test.setTimeout(45_000);
-  await page.route('**/api/contact', (r) =>
-    r.fulfill({ json: { relay: 'formsubmit', to: 'inbox@example.org' } }),
-  );
-  // Never answer, as during FormSubmit's outage.
-  await page.route('https://formsubmit.co/**', () => {});
+  await page.route('**/api/contact', (r) => r.fulfill({ json: { relay: 'web3forms', key: KEY } }));
+  // Never answer, as FormSubmit did during its outage.
+  await page.route('https://api.web3forms.com/**', () => {});
   await page.goto('/contact');
   const form = page.locator('#project-brief form');
   await form.getByLabel('Your name', { exact: true }).fill('Asha Rao');

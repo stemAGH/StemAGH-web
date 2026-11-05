@@ -56,14 +56,13 @@ export function validateEnquiry(input: unknown): Enquiry | string {
 
 export const subjectFor = (e: Enquiry) => `Project enquiry: ${e.service} (${e.name})`;
 
-/** FormSubmit payload: one labelled row per field in the email it sends. */
-export const formSubmitFields = (e: Enquiry) => ({
-  _subject: subjectFor(e),
-  _replyto: e.email,
-  _template: 'table',
-  _captcha: 'false',
+/** Web3Forms payload. `email` sets the reply-to; other fields arrive as labelled rows. */
+export const web3formsFields = (e: Enquiry, accessKey: string) => ({
+  access_key: accessKey,
+  subject: subjectFor(e),
+  from_name: 'StemAGH website',
+  email: e.email,
   Name: e.name,
-  Email: e.email,
   Company: e.company || '-',
   'Project type': e.service,
   Budget: e.budget || 'To discuss',

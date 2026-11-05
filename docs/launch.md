@@ -131,12 +131,13 @@ traps), which sends it in the first way that is configured:
    For Lark Mail: `SMTP_HOST=smtp.larksuite.com`, `SMTP_USER=contact@stemagh.com`, and an IMAP/SMTP
    password created in Lark Mail settings (not the account password).
 2. **Resend:** `RESEND_API_KEY` (secret) and `CONTACT_FROM` on a domain verified in Resend.
-3. **FormSubmit (no settings):** the visitor's browser relays it through formsubmit.co; FormSubmit
-   rejects server-side posts. Needs a one-time activation link sent to the inbox. It is a free
-   service with no guarantees: on 5 November 2026 it was down (522 on every request), so every
-   enquiry fell back to the email draft. Use option 1.
+3. **Web3Forms (default):** the visitor's browser posts to api.web3forms.com; its free plan rejects
+   server-side posts. The access key in `site.web3formsKey` (`src/content/site.ts`) picks the
+   receiving inbox; it is public by design. Get one at web3forms.com for contact@stemagh.com;
+   `WEB3FORMS_KEY` overrides it. With no key the form offers the email draft. This replaced
+   FormSubmit, which was down on 5 November 2026 (522 on every request).
 
-Each enquiry arrives with reply-to set to the visitor. If sending fails or FormSubmit does not
+Each enquiry arrives with reply-to set to the visitor. If sending fails or Web3Forms does not
 answer within 12 seconds, the visitor is offered a prepared email draft, so nothing is lost.
 Spam protection is a hidden field plus a 3-second minimum; there is no rate limit yet.
 
@@ -145,7 +146,7 @@ Spam protection is a hidden field plus a 3-second minimum; there is no rate limi
 The site sets no cookies, runs no analytics, and loads no third-party scripts or fonts (the
 Playwright suite checks cookies and request hosts on every route). Since the enquiry form was
 added, `/privacy` describes what is actually processed: form fields emailed to the owner's inbox (from
-the server by SMTP or Resend, or through FormSubmit as a backup), demo data kept in the visitor's own browser, and Vercel's request logs. Update it whenever
+the server by SMTP or Resend, or through Web3Forms by default), demo data kept in the visitor's own browser, and Vercel's request logs. Update it whenever
 any of that changes. Still the owner's to decide:
 
 - **Who is responsible for enquiries and for the site.** StemAGH is not a registered legal entity.

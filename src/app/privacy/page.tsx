@@ -27,8 +27,8 @@ const sections: [string, React.ReactNode][] = [
       When you send the project brief on our contact page, we receive your name, email address, and
       whatever you choose to tell us about your company, budget, timeline and project. We use it
       only to reply to you and to prepare a proposal. The form is emailed to our inbox from our
-      website’s server through our own email provider or, as a backup, from your browser through
-      FormSubmit (formsubmit.co), a form-to-email service. We do not add you to a mailing list, and
+      website’s server through our own email provider or, by default, from your browser through
+      Web3Forms (web3forms.com), a form-to-email service. We do not add you to a mailing list, and
       we do not sell or share your details. Ask us at any time to see or delete what we hold.
     </>,
   ],

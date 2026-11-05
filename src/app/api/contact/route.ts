@@ -7,9 +7,10 @@ import { site } from '@/content/site';
  * - SMTP: SMTP_HOST + SMTP_USER + SMTP_PASS (e.g. the contact@ mailbox on Lark Mail). Sends from
  *   our own mailbox, so no third party is involved. Preferred.
  * - Resend: RESEND_API_KEY + CONTACT_FROM (a sender on a domain verified in Resend).
- * - Otherwise this route validates and answers { relay: 'formsubmit', to }, and the visitor's
- *   browser posts to FormSubmit, which refuses server-side requests (403 from Vercel). A free
- *   service with no guarantees: it has had outages (522 on 5 Nov 2026), so prefer SMTP.
+ * - Otherwise (the default) this route validates and answers { relay: 'web3forms', key }, and the
+ *   visitor's browser posts to Web3Forms: its free plan refuses server-side requests. The key
+ *   (site.web3formsKey, or WEB3FORMS_KEY to override) picks the receiving inbox and is public.
+ *   Replaced FormSubmit, which was down on 5 Nov 2026 (522 on every request).
  * CONTACT_DELIVERY=off (tests) answers 503 with no relay, so nothing is ever sent.
  */
 
@@ -76,7 +77,7 @@ export async function POST(req: Request) {
   if (!to || process.env.CONTACT_DELIVERY === 'off') return json(503, { error: 'not-configured' });
 
   const { SMTP_HOST, SMTP_USER, SMTP_PASS, RESEND_API_KEY, CONTACT_FROM } = process.env;
-  // Half-configured SMTP is a mistake, not a choice: say so instead of quietly using FormSubmit.
+  // Half-configured SMTP is a mistake, not a choice: say so instead of quietly using the relay.
   const smtpMissing = Object.entries({ SMTP_HOST, SMTP_USER, SMTP_PASS })
     .filter(([, v]) => !v)
     .map(([k]) => k);
@@ -88,7 +89,10 @@ export async function POST(req: Request) {
     if (SMTP_HOST && SMTP_USER && SMTP_PASS) await sendSmtp(enquiry, to);
     else if (RESEND_API_KEY && CONTACT_FROM)
       await sendResend(enquiry, to, RESEND_API_KEY, CONTACT_FROM);
-    else return json(200, { relay: 'formsubmit', to });
+    else {
+      const key = process.env.WEB3FORMS_KEY || site.web3formsKey;
+      return key ? json(200, { relay: 'web3forms', key }) : json(503, { error: 'not-configured' });
+    }
   } catch (err) {
     // Never log the enquiry itself: it holds the visitor's personal details.
     console.error('contact: send failed', (err as Error).message);
