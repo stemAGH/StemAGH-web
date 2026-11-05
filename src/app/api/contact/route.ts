@@ -76,6 +76,14 @@ export async function POST(req: Request) {
   if (!to || process.env.CONTACT_DELIVERY === 'off') return json(503, { error: 'not-configured' });
 
   const { SMTP_HOST, SMTP_USER, SMTP_PASS, RESEND_API_KEY, CONTACT_FROM } = process.env;
+  // Half-configured SMTP is a mistake, not a choice: say so instead of quietly using FormSubmit.
+  const smtpMissing = Object.entries({ SMTP_HOST, SMTP_USER, SMTP_PASS })
+    .filter(([, v]) => !v)
+    .map(([k]) => k);
+  if (smtpMissing.length > 0 && smtpMissing.length < 3) {
+    console.error('contact: SMTP is partly configured; missing', smtpMissing.join(', '));
+    return json(503, { error: 'smtp-incomplete' });
+  }
   try {
     if (SMTP_HOST && SMTP_USER && SMTP_PASS) await sendSmtp(enquiry, to);
     else if (RESEND_API_KEY && CONTACT_FROM)
