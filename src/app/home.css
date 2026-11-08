@@ -970,3 +970,8 @@
     grid-template-columns: 1fr;
   }
 }
+
+.home-goals .home-more,
+.home-questions .home-more {
+  color: #1d4ed8;
+}
