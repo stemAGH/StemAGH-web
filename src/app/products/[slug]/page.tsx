@@ -101,7 +101,18 @@ export default async function ProductPage({ params }: Props) {
           <p className="mt-5 max-w-3xl text-xl text-pretty text-ink">{product.tagline}</p>
           <p className="mt-4 max-w-3xl text-lg text-pretty text-ink-muted">{product.summary}</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            {links.repo && <ButtonLink href={links.repo}>View on GitHub</ButtonLink>}
+            {product.slug === 'openestate' ? (
+              <>
+                <ButtonLink href="/contact?service=openestate#project-brief">
+                  Discuss OpenEstate for your business
+                </ButtonLink>
+                <ButtonLink href="#tour-title" variant="secondary">
+                  Explore the interface
+                </ButtonLink>
+              </>
+            ) : (
+              links.repo && <ButtonLink href={links.repo}>View on GitHub</ButtonLink>
+            )}
             {links.install && (
               <ButtonLink href={links.install} variant="secondary">
                 Read the installation guide
@@ -118,6 +129,53 @@ export default async function ProductPage({ params }: Props) {
           </dl>
         </Container>
       </section>
+
+      {product.slug === 'openestate' && (
+        <Section labelledBy="benefits-title" tone="muted">
+          <SectionHeading
+            id="benefits-title"
+            eyebrow="Built around your business"
+            title="One place for your sales, collections and customer relationships."
+            intro="For property developers and channel-sales teams managing enquiries, bookings and payment follow-ups across separate spreadsheets and conversations."
+          />
+          <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              [
+                'Keep the next follow-up visible',
+                'Give sales teams a shared lead history, assigned ownership and an overdue queue, so managers can see what needs attention.',
+              ],
+              [
+                'See what is sold and what is available',
+                'Bring apartment units, plots and farmhouse inventory into the booking process, with project-specific pricing and charges.',
+              ],
+              [
+                'Understand what is due',
+                'Review payment schedules, receipts and collection reports together instead of piecing together a customer’s payment position.',
+              ],
+              [
+                'Give buyers a self-service window',
+                'Customers can check payment history, download documents and raise support tickets through a mobile-friendly web portal.',
+              ],
+              [
+                'Keep channel partners informed',
+                'Brokers can review their sales, availability and commission position through their own portal.',
+              ],
+              [
+                'Control where your data lives',
+                'Run the open-source software on infrastructure you manage. Plan for hosting, backups, upgrades and technical support as part of the rollout.',
+              ],
+            ].map(([title, body]) => (
+              <article
+                key={title}
+                className="rounded-card border border-line bg-surface p-6 sm:p-8"
+              >
+                <h3 className="text-xl font-semibold tracking-tight">{title}</h3>
+                <p className="mt-3 leading-7 text-ink-muted">{body}</p>
+              </article>
+            ))}
+          </div>
+        </Section>
+      )}
 
       {product.slug === 'openestate' && (
         <section aria-labelledby="tour-title" className="work-section">
@@ -185,6 +243,55 @@ export default async function ProductPage({ params }: Props) {
           ))}
         </div>
       </Section>
+
+      {product.slug === 'openestate' && (
+        <Section labelledBy="pilot-title">
+          <SectionHeading
+            id="pilot-title"
+            eyebrow="A practical first step"
+            title="Start with one project. Validate your workflow."
+            intro="A focused pilot helps your sales and accounts teams decide whether OpenEstate fits before a wider rollout."
+          />
+          <ol className="mt-10 grid gap-6 md:grid-cols-3">
+            {[
+              [
+                '01 · Map your process',
+                'Discuss your property types, lead sources, sales roles, payment plans and reporting needs. Identify the integrations and changes you would need.',
+              ],
+              [
+                '02 · Run a sample journey',
+                'Use sample data to follow a lead through a booking, payment schedule and receipt. Review the customer and broker experience with your team.',
+              ],
+              [
+                '03 · Agree the rollout',
+                'Confirm the scope, hosting, access, data preparation, training and support responsibilities before bringing real operations onto the system.',
+              ],
+            ].map(([title, body]) => (
+              <li key={title} className="rounded-card border border-line p-6">
+                <h3 className="text-xl font-semibold">{title}</h3>
+                <p className="mt-3 leading-7 text-ink-muted">{body}</p>
+              </li>
+            ))}
+          </ol>
+          <div className="mt-10 rounded-card border border-line bg-surface p-6 sm:p-8">
+            <h3 className="text-2xl font-semibold">Could OpenEstate fit your company?</h3>
+            <p className="mt-3 max-w-3xl leading-7 text-ink-muted">
+              Tell us how many projects and team members you have, what you use today, and which
+              part of your process is hardest to manage. We can discuss a pilot, configuration or
+              customisation scope with you.
+            </p>
+            <div className="mt-6">
+              <ButtonLink href="/contact?service=openestate#project-brief">
+                Discuss an OpenEstate implementation
+              </ButtonLink>
+            </div>
+            <p className="mt-4 text-sm text-ink-muted">
+              Open-source software; hosting, implementation, customisation and ongoing support are
+              separate considerations. Any paid work is scoped and quoted before it begins.
+            </p>
+          </div>
+        </Section>
+      )}
 
       {/* Deployment and licence */}
       {product.deployment && (
