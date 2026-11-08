@@ -3,7 +3,7 @@
  * /products/[slug] all read from here. Add a product by adding one entry.
  *
  * Every OpenEstate statement below was checked against the public repository
- * (README, docs/docs/features-and-usage.md, LICENSE) at v0.8.4. Re-check the
+ * (v0.9.1 release, v0.9.0 release notes, installation guide and changelog). Re-check the
  * version, requirements and known gaps whenever OpenEstate ships a release.
  */
 
@@ -82,8 +82,8 @@ export const products: Product[] = [
       'Pre-sales lead management, inventory, bookings, payment ledgers, broker commissions and customer and broker portals in one self-hosted system, built around Indian real-estate practice.',
     status: 'available',
     statusNote: 'Pre-1.0 release, suited to a first pilot',
-    version: 'v0.8.4',
-    reviewedOn: '2026-10-17',
+    version: 'v0.9.1',
+    reviewedOn: '2026-11-09',
     category: 'Real-estate sales and operations',
     seoTitle: 'OpenEstate: Open-Source Real Estate CRM',
     audience: [
@@ -140,6 +140,8 @@ export const products: Product[] = [
         items: [
           'Booking wizard with co-applicants, cost breakup and payment plan',
           'Generated installment schedules and oldest-dues-first receipt allocation',
+          'Attach, change or remove a simple-interest rule for each booking, with interest starting on the attachment date',
+          'Manual interest accrual from the installment schedule, controlled by staff permissions',
           'Cheque lifecycle tracking, including bounces',
           'CGST, SGST and IGST split by property location, plus Section 194-IA TDS tracking',
           'Transfers, cancellations and refunds on an append-only ledger',
@@ -180,7 +182,8 @@ export const products: Product[] = [
     deployment: {
       paragraphs: [
         'OpenEstate is licensed under AGPL-3.0. You install it natively on your own Linux server, with a PostgreSQL, Redis and nginx that you run and back up yourself. It does not depend on a mandatory external service.',
-        'The installer is verified on Ubuntu 25.10. Ubuntu 24.04 is the documented target but has not been independently re-verified. Other distributions are untested. It needs Node.js 20.',
+        'The installation guide documents a verified fresh install on Ubuntu 25.10. The v0.9.0 release notes additionally report an upgrade rehearsal on Ubuntu 24.04 with PostgreSQL 16; this is upgrade evidence, not a fresh-install verification. Node.js 20 is required.',
+        'Signed-in pages require Chrome or Edge 116, Firefox 124, or Safari 17.4 or newer. The release notes report testing in Chromium.',
         'In plain terms, AGPL-3.0 asks you to offer the source of a modified version to people who use it over a network. This is a summary, not legal advice: read the licence before offering a modified copy as a service.',
       ],
       commandCaption: 'Install, from the project README',
@@ -192,9 +195,11 @@ sudo ./install-native.sh \\
     },
     limitations: [
       'There is no hosted demo yet. The documentation says one is coming; today you install it on your own server.',
-      'Interest on delayed payments is calculated by the system, but it cannot yet be switched on for a booking from the app, so no interest is charged.',
+      'Delayed-payment interest supports simple-interest rules only. Rules are attached one booking at a time, with no bulk attachment or backdated charging before the attachment date.',
       'A custom field can be defined on a unit but there is no screen to fill it in.',
       'The audit log is incomplete: updates record new values only, and some bulk changes are not recorded.',
+      'Project active/inactive status is not yet enforced across availability, reports and portals. The customer and broker portals are mobile web, not native mobile apps.',
+      'The published v0.9.1 release does not include the newer atomic booking/payment-plan flow and sales-screen improvements on master; these are marked Unreleased in the changelog.',
     ],
     links: {
       repo: REPO,
