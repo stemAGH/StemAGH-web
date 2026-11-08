@@ -11,7 +11,7 @@ export const services = [
 /** `/contact?service=web` style links from the home page map onto the list above. */
 export const serviceFromQuery: Record<string, (typeof services)[number]> = {
   web: 'Business website',
-  software: 'Web application',
+  software: 'Custom software',
   launch: 'Business website',
   app: 'Mobile app',
   openestate: 'OpenEstate implementation',

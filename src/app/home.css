@@ -902,3 +902,71 @@
     width: 100%;
   }
 }
+
+/* Goal-led enquiry paths and buying questions. */
+.home-decision {
+  background: #f3f5fa;
+}
+.home-decision-intro {
+  max-width: 680px;
+  margin-bottom: 28px;
+  color: #475569;
+  line-height: 1.7;
+}
+.home-goals {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.home-goals article {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 28px;
+  border: 1px solid #dce2ec;
+  border-radius: 20px;
+  background: white;
+}
+.home-goals h3 {
+  font-size: 22px;
+  line-height: 1.3;
+}
+.home-goals p {
+  flex: 1;
+  margin: 16px 0 24px;
+  line-height: 1.7;
+  color: #475569;
+}
+.home-questions {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 48px;
+}
+.home-questions h2 {
+  font-size: clamp(30px, 4vw, 44px);
+  letter-spacing: -0.03em;
+}
+.home-questions p {
+  margin: 16px 0;
+  line-height: 1.7;
+  color: #475569;
+}
+.home-answers details {
+  border-bottom: 1px solid #dce2ec;
+  padding: 20px 0;
+}
+.home-answers summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding-right: 12px;
+}
+.home-answers summary:focus-visible {
+  outline: 2px solid #315de6;
+  outline-offset: 6px;
+}
+@media (max-width: 760px) {
+  .home-goals,
+  .home-questions {
+    grid-template-columns: 1fr;
+  }
+}

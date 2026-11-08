@@ -5,7 +5,14 @@ test('home is compact: hero, services, work, process, call to action', async ({ 
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Software built around');
   const h2 = await page.getByRole('main').locator('h2').allInnerTexts();
-  expect(h2).toEqual(['What we build', 'Our work', 'How we work', 'Have a project in mind?']);
+  expect(h2).toEqual([
+    'What we build',
+    'Start with the problem you want to solve.',
+    'Our work',
+    'How we work',
+    'Before you start.',
+    'Have a project in mind?',
+  ]);
   // Detail lives on its own pages, not on home.
   await expect(page.locator('iframe')).toHaveCount(0);
   await expect(page.getByText('Is hosting free?')).toHaveCount(0);
@@ -57,4 +64,23 @@ test('when mail cannot be sent, the brief falls back to an email draft', async (
   expect(decodeURIComponent((await draft.getAttribute('href'))!)).toContain(
     'Build a website for our consulting business.',
   );
+});
+
+test('goal links preselect the right service and buyer questions open', async ({ page }) => {
+  for (const [label, value] of [
+    ['Discuss my website', 'Business website'],
+    ['Discuss my app', 'Mobile app'],
+    ['Discuss my workflow', 'Custom software'],
+  ] as const) {
+    await page.goto('/');
+    await page.getByRole('link', { name: label }).click();
+    await expect(page.getByLabel('What do you need?')).toHaveValue(value);
+  }
+  await page.goto('/');
+  await page.getByText('Are there ongoing costs after launch?', { exact: true }).click();
+  await expect(
+    page.getByText('Domains, hosting, email and any paid services may have recurring fees.', {
+      exact: false,
+    }),
+  ).toBeVisible();
 });

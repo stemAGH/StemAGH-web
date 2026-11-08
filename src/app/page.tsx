@@ -90,7 +90,7 @@ export default function HomePage() {
             </div>
             <div className="home-chip home-chip-b">
               <b>₹4,42,50,000</b>
-              <span>Owner portfolio, at a glance</span>
+              <span>Illustrative demo portfolio</span>
             </div>
           </div>
         </div>
@@ -175,6 +175,47 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="home-section home-decision" aria-labelledby="decision-title">
+        <div className="home-wrap">
+          <div className="home-head">
+            <h2 id="decision-title">Start with the problem you want to solve.</h2>
+          </div>
+          <p className="home-decision-intro">
+            You don’t need a technical specification to get started. Pick the goal closest to yours.
+          </p>
+          <div className="home-goals">
+            {[
+              [
+                'Turn visitors into enquiries',
+                'A new business website or a clearer, easier-to-use version of your existing site.',
+                'web',
+                'Discuss my website',
+              ],
+              [
+                'Give customers one place to go',
+                'A portal or app for updates, documents, requests and everyday customer tasks.',
+                'app',
+                'Discuss my app',
+              ],
+              [
+                'Reduce repetitive admin',
+                'Bring leads, follow-ups and team workflows together in a tool built for your process.',
+                'software',
+                'Discuss my workflow',
+              ],
+            ].map(([title, description, service, action]) => (
+              <article key={service}>
+                <h3>{title}</h3>
+                <p>{description}</p>
+                <Link className="home-more" href={`/contact?service=${service}#project-brief`}>
+                  {action} →
+                </Link>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="home-showcase" aria-labelledby="work-title" id="work">
         <div className="home-wrap">
           <div className="home-head home-head-dark reveal">
@@ -183,7 +224,7 @@ export default function HomePage() {
           </div>
           <Link href="/work" className="home-feature reveal">
             <div className="home-feature-copy">
-              <small>Phone app · Real estate</small>
+              <small>Interactive concept demo · Real estate</small>
               <h3>Aurelia Estates owner app</h3>
               <p>
                 Holdings and plot values, project pages, maintenance subscriptions, QR visitor
@@ -259,6 +300,43 @@ export default function HomePage() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      <section className="home-section" aria-labelledby="questions-title">
+        <div className="home-wrap home-questions">
+          <div>
+            <h2 id="questions-title">Before you start.</h2>
+            <p>Practical answers for your first project conversation.</p>
+            <Link className="home-more" href="/services">
+              Explore services and terms →
+            </Link>
+          </div>
+          <div className="home-answers">
+            {[
+              [
+                'Can you improve our existing website?',
+                'Yes. Share your current website and what needs to work better, such as mobile usability, service information or the enquiry journey. We can discuss a focused improvement or a redesign.',
+              ],
+              [
+                'What should I send in my enquiry?',
+                'Your business name, the problem you want to solve, any existing website, your budget range and preferred timeline. If you are unsure about features, start with the outcome you need.',
+              ],
+              [
+                'How are price and delivery dates decided?',
+                'They depend on the agreed features, content and integrations. We discuss your requirements and provide a written scope, milestones and costs before work begins.',
+              ],
+              [
+                'Are there ongoing costs after launch?',
+                'Domains, hosting, email and any paid services may have recurring fees. Maintenance and further improvements are scoped separately. We agree these costs with you before launch.',
+              ],
+            ].map(([question, answer]) => (
+              <details key={question}>
+                <summary>{question}</summary>
+                <p>{answer}</p>
+              </details>
+            ))}
+          </div>
         </div>
       </section>
 
