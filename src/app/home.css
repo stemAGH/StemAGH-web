@@ -975,3 +975,37 @@
 .home-questions .home-more {
   color: #1d4ed8;
 }
+
+.home-insight {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+  border-top: 1px solid #d7e1ef;
+  padding-top: 38px;
+}
+.home-insight h2 {
+  max-width: 780px;
+  font-size: clamp(28px, 3.3vw, 42px);
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+  font-weight: 600;
+  margin-top: 15px;
+}
+.home-insight p:not(.home-kicker) {
+  font-size: 15px;
+  line-height: 1.85;
+  max-width: 700px;
+  color: #4b6080;
+  margin-top: 20px;
+}
+.home-insight .home-btn {
+  flex-shrink: 0;
+}
+@media (max-width: 700px) {
+  .home-insight {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 25px;
+  }
+}

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { site } from '@/content/site';
+import { outagePost } from '@/content/outage-post';
 import { openGraph } from '@/content/seo';
 import { Phone } from '@/components/phone';
 import './home.css';
@@ -340,6 +341,21 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="home-section" aria-labelledby="insight-title">
+        <div className="home-wrap home-insight">
+          <div>
+            <p className="home-kicker">OPINION / NOVEMBER 14, 2026</p>
+            <h2 id="insight-title">{outagePost.title}</h2>
+            <p>
+              A response to NDTV’s Microsoft 365 outage report—and a practical look at keeping your
+              real estate CRM on infrastructure you control.
+            </p>
+          </div>
+          <Link className="home-btn" href={`/insights/${outagePost.slug}`}>
+            Read the post <span aria-hidden="true">→</span>
+          </Link>
+        </div>
+      </section>
       <section className="home-cta" aria-labelledby="cta-title">
         <div className="home-wrap">
           <div>

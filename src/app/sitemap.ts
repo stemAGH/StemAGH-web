@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { outagePost } from '@/content/outage-post';
 import { products } from '@/content/products';
 import { siteUrl } from '@/content/seo';
 
@@ -15,6 +16,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/about',
     '/contact',
     '/privacy',
+    '/insights',
+    `/insights/${outagePost.slug}`,
   ];
   return paths.map((p) => ({ url: `${siteUrl}${p}` }));
 }

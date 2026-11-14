@@ -43,6 +43,11 @@ export function SiteFooter() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link href="/insights" className={linkCls}>
+                Insights
+              </Link>
+            </li>
           </ul>
         </nav>
 

@@ -15,6 +15,11 @@ const pages = [
   ['/about', `${SITE}/about`],
   ['/contact', `${SITE}/contact`],
   ['/privacy', `${SITE}/privacy`],
+  ['/insights', `${SITE}/insights`],
+  [
+    '/insights/microsoft-365-outage-self-hosted-crm',
+    `${SITE}/insights/microsoft-365-outage-self-hosted-crm`,
+  ],
 ] as const;
 
 for (const [path, url] of pages) {
