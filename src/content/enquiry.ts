@@ -8,6 +8,21 @@ export const services = [
   'Help defining my project',
 ] as const;
 
+export const serviceLandingEnquiries = {
+  'website-development': {
+    service: 'Business website',
+    source: 'Business website development page',
+  },
+  'website-redesign': { service: 'Business website', source: 'Website redesign page' },
+  'crm-automation': { service: 'Custom software', source: 'CRM workflow automation page' },
+} as const satisfies Record<string, { service: (typeof services)[number]; source: string }>;
+
+export function getServiceLandingEnquiry(query: string) {
+  if (Object.hasOwn(serviceLandingEnquiries, query)) {
+    return serviceLandingEnquiries[query as keyof typeof serviceLandingEnquiries];
+  }
+}
+
 /** `/contact?service=web` style links from the home page map onto the list above. */
 export const serviceFromQuery: Record<string, (typeof services)[number]> = {
   web: 'Business website',

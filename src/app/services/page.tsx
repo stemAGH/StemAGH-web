@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { JsonLd } from '@/components/json-ld';
+import { TextLink } from '@/components/links';
 import { openGraph, siteUrl } from '@/content/seo';
+import { servicePages } from '@/content/service-pages';
 import { services } from '@/content/services';
 const title = 'Website Development & Custom Software Services';
 const description =
@@ -55,6 +57,13 @@ export default function ServicesPage() {
                   <li key={item}>{item}</li>
                 ))}
               </ul>
+              {servicePages
+                .filter((page) => page.parent === service.slug)
+                .map((page) => (
+                  <p className="mt-4!" key={page.slug}>
+                    <TextLink href={`/services/${page.slug}`}>{page.title}</TextLink>
+                  </p>
+                ))}
             </article>
           ))}
         </div>

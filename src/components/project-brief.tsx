@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import {
   enquiryText,
+  getServiceLandingEnquiry,
   limits,
   serviceFromQuery,
   services,
@@ -27,15 +28,20 @@ export function ProjectBrief({ source }: { source?: string } = {}) {
   const startedAt = useRef(0);
   const status = useRef<HTMLElement>(null);
   const serviceSelect = useRef<HTMLSelectElement>(null);
+  const landingSource = useRef<string | undefined>(undefined);
   const companyInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     startedAt.current = Date.now();
     // Preselect from links like /contact?service=web. Set on the DOM, so the server render matches.
     const params = new URLSearchParams(location.search);
-    const q = params.get('service');
-    if (q && serviceFromQuery[q] && serviceSelect.current)
-      serviceSelect.current.value = serviceFromQuery[q];
+    const query = params.get('service') ?? '';
+    const landing = getServiceLandingEnquiry(query);
+    const service =
+      landing?.service ??
+      (Object.hasOwn(serviceFromQuery, query) ? serviceFromQuery[query] : undefined);
+    if (service && serviceSelect.current) serviceSelect.current.value = service;
+    landingSource.current = landing?.source;
     // Links like /hello?company=Acme fill in the company, trimmed to the field's limit.
     const company = params.get('company')?.trim().slice(0, limits.company);
     if (company && companyInput.current && !companyInput.current.value)
@@ -49,7 +55,7 @@ export function ProjectBrief({ source }: { source?: string } = {}) {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = Object.fromEntries(new FormData(event.currentTarget)) as Record<string, string>;
-    const enquiry = validateEnquiry(data);
+    const enquiry = validateEnquiry({ ...data, source: source ?? landingSource.current });
     if (typeof enquiry === 'string') return setState({ kind: 'invalid', message: enquiry });
     setState({ kind: 'sending' });
     // The server silently drops forms sent within 3s of opening (bots). A fast human waits instead.
