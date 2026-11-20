@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { buyerGuides } from '@/content/buyer-guides';
 import { outagePost } from '@/content/outage-post';
 import { products } from '@/content/products';
 import { siteUrl } from '@/content/seo';
@@ -20,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/privacy',
     '/insights',
     `/insights/${outagePost.slug}`,
+    ...buyerGuides.map((guide) => `/insights/${guide.slug}`),
   ];
   return paths.map((p) => ({ url: `${siteUrl}${p}` }));
 }

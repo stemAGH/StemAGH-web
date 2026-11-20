@@ -41,6 +41,7 @@ export const limits = {
   brief: 3000,
   /** Where the enquiry came from, e.g. the pitch page. Set by the page, not typed. */
   source: 80,
+  discovery: 60,
 };
 type Field = keyof typeof limits;
 
@@ -83,6 +84,7 @@ export const web3formsFields = (e: Enquiry, accessKey: string) => ({
   Budget: e.budget || 'To discuss',
   Timeline: e.timeline || 'To discuss',
   ...(e.source && { Source: e.source }),
+  ...(e.discovery && { 'How they heard about us': e.discovery }),
   Brief: e.brief,
 });
 
@@ -95,6 +97,7 @@ export function enquiryText(e: Enquiry) {
     `Budget: ${e.budget || 'To discuss'}`,
     `Timeline: ${e.timeline || 'To discuss'}`,
     ...(e.source ? [`Source: ${e.source}`] : []),
+    ...(e.discovery ? [`How they heard about us: ${e.discovery}`] : []),
     '',
     e.brief,
   ].join('\n');

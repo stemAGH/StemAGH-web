@@ -23,6 +23,12 @@ const pages = [
     '/insights/microsoft-365-outage-self-hosted-crm',
     `${SITE}/insights/microsoft-365-outage-self-hosted-crm`,
   ],
+  ['/insights/website-redesign-cost-india', `${SITE}/insights/website-redesign-cost-india`],
+  [
+    '/insights/real-estate-crm-evaluation-checklist',
+    `${SITE}/insights/real-estate-crm-evaluation-checklist`,
+  ],
+  ['/insights/stemagh-website-redesign', `${SITE}/insights/stemagh-website-redesign`],
 ] as const;
 
 for (const [path, url] of pages) {
@@ -135,9 +141,14 @@ test('service landing pages are discoverable and their enquiries keep the page s
     await page
       .getByLabel('What would you like to achieve?')
       .fill('Test enquiry from a service landing page.');
+    await page.getByLabel('How did you hear about StemAGH?').selectOption('Google Search');
     const pending = page.waitForRequest((req) => new URL(req.url()).pathname === '/api/contact');
     await page.getByRole('button', { name: /Send project brief/ }).click();
-    expect((await pending).postDataJSON()).toMatchObject({ service: selection, source });
+    expect((await pending).postDataJSON()).toMatchObject({
+      service: selection,
+      source,
+      discovery: 'Google Search',
+    });
   }
   expect((await request.get('/services/not-a-service')).status()).toBe(404);
 });

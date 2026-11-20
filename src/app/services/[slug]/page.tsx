@@ -126,6 +126,21 @@ export default async function ServiceDetailPage({ params }: Props) {
       <Section>
         <div className="flex flex-wrap items-center gap-x-7 gap-y-4">
           <ButtonLink href={contact}>{service.action}</ButtonLink>
+          {service.slug === 'website-redesign' && (
+            <TextLink href="/insights/website-redesign-cost-india">
+              Compare website redesign costs
+            </TextLink>
+          )}
+          {service.slug === 'business-website-development' && (
+            <TextLink href="/insights/stemagh-website-redesign">
+              See how we built our own enquiry journey
+            </TextLink>
+          )}
+          {service.slug === 'crm-workflow-automation' && (
+            <TextLink href="/insights/real-estate-crm-evaluation-checklist">
+              Evaluate a real estate CRM
+            </TextLink>
+          )}
           <TextLink href={service.related.href}>{service.related.label}</TextLink>
         </div>
       </Section>
