@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { outagePost } from '../src/content/outage-post';
 
 test('home is compact: hero, services, work, process, call to action', async ({ page }) => {
   await page.goto('/');
@@ -11,6 +12,7 @@ test('home is compact: hero, services, work, process, call to action', async ({ 
     'Our work',
     'How we work',
     'Before you start.',
+    outagePost.title,
     'Have a project in mind?',
   ]);
   // Detail lives on its own pages, not on home.

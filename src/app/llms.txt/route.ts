@@ -1,4 +1,5 @@
 import { siteUrl } from '@/content/seo';
+import { servicePages } from '@/content/service-pages';
 import { services } from '@/content/services';
 
 export const dynamic = 'force-static';
@@ -10,6 +11,7 @@ export function GET() {
 
 ## Services
 ${services.map((s) => `- [${s.name}](${base}/services#${s.slug}): ${s.description}`).join('\n')}
+${servicePages.map((s) => `- [${s.title}](${base}/services/${s.slug}): ${s.description}`).join('\n')}
 
 ## Main pages
 - [Services](${base}/services): Deliverables, project process, ownership and hosting terms.

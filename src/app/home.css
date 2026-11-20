@@ -984,6 +984,11 @@
   border-top: 1px solid #d7e1ef;
   padding-top: 38px;
 }
+.home-insight .home-kicker {
+  border-color: #d7e1ef;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
 .home-insight h2 {
   max-width: 780px;
   font-size: clamp(28px, 3.3vw, 42px);

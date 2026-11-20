@@ -8,6 +8,9 @@ test.skip(!SITE, 'set SITE_URL to verify production metadata');
 const pages = [
   ['/', SITE],
   ['/services', `${SITE}/services`],
+  ['/services/business-website-development', `${SITE}/services/business-website-development`],
+  ['/services/website-redesign', `${SITE}/services/website-redesign`],
+  ['/services/crm-workflow-automation', `${SITE}/services/crm-workflow-automation`],
   ['/work', `${SITE}/work`],
   ['/products', `${SITE}/products`],
   ['/products/openestate', `${SITE}/products/openestate`],
@@ -83,4 +86,58 @@ test('homepage primary content is available without JavaScript', async ({ browse
   // phones the nav is inside a closed menu).
   expect(await page.locator('header a[href="/services"]').count()).toBeGreaterThan(0);
   await context.close();
+});
+
+test('service landing pages are discoverable and their enquiries keep the page source', async ({
+  page,
+  request,
+}) => {
+  const services = await (await request.get('/services')).text();
+  for (const [slug, heading, action, selection, source] of [
+    [
+      'business-website-development',
+      'Website development for small businesses in India',
+      'Request a website quote',
+      'Business website',
+      'Business website development page',
+    ],
+    [
+      'website-redesign',
+      'Website redesign for businesses in India',
+      'Discuss my website redesign',
+      'Business website',
+      'Website redesign page',
+    ],
+    [
+      'crm-workflow-automation',
+      'Custom CRM and workflow automation for businesses in India',
+      'Discuss my CRM workflow',
+      'Custom software',
+      'CRM workflow automation page',
+    ],
+  ] as const) {
+    const path = `/services/${slug}`;
+    expect(services).toContain(`href="${path}"`);
+    const response = await request.get(path);
+    expect(response.status()).toBe(200);
+    const html = await response.text();
+    expect(html).toContain(heading);
+    expect(html).toContain('"@type":"BreadcrumbList"');
+    expect(html).toContain('"@type":"Service"');
+
+    await page.goto(path);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(heading);
+    await page.getByRole('link', { name: action, exact: true }).first().click();
+    await expect(page.getByLabel('What do you need?')).toHaveValue(selection);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `${SITE}/contact`);
+    await page.getByLabel('Your name', { exact: true }).fill('Preview visitor');
+    await page.getByLabel('Email address', { exact: true }).fill('visitor@example.org');
+    await page
+      .getByLabel('What would you like to achieve?')
+      .fill('Test enquiry from a service landing page.');
+    const pending = page.waitForRequest((req) => new URL(req.url()).pathname === '/api/contact');
+    await page.getByRole('button', { name: /Send project brief/ }).click();
+    expect((await pending).postDataJSON()).toMatchObject({ service: selection, source });
+  }
+  expect((await request.get('/services/not-a-service')).status()).toBe(404);
 });

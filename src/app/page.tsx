@@ -60,8 +60,8 @@ export default function HomePage() {
               Software built around <span>your business.</span>
             </h1>
             <p className="home-lead">
-              We design and build websites, phone apps and business tools that people enjoy using.
-              Scope, milestones and costs are agreed with you before any work starts.
+              We build business websites, mobile apps and custom workflow tools for companies across
+              India. Scope, milestones and costs are agreed with you before any work starts.
             </p>
             <div className="home-actions">
               <Link className="home-btn" href="/contact#project-brief">
@@ -127,11 +127,11 @@ export default function HomePage() {
               </div>
               <h3>Business websites</h3>
               <p>
-                Fast, mobile-first sites that explain what you do and turn visitors into enquiries.
+                Mobile-friendly sites that explain your services and make it easy for customers to
+                enquire.
               </p>
-              <Link href="/contact?service=web#project-brief">
-                Let’s talk<span className="sr-only"> about business websites</span>{' '}
-                <span aria-hidden="true">→</span>
+              <Link href="/services/business-website-development">
+                Business website development <span aria-hidden="true">→</span>
               </Link>
             </li>
             <li className="home-tile home-tile-feature reveal">
@@ -167,9 +167,8 @@ export default function HomePage() {
               </div>
               <h3>Custom software</h3>
               <p>Workflow tools built around how your team actually works, not a template.</p>
-              <Link href="/contact?service=software#project-brief">
-                Let’s talk<span className="sr-only"> about custom software</span>{' '}
-                <span aria-hidden="true">→</span>
+              <Link href="/services/crm-workflow-automation">
+                CRM and workflow automation <span aria-hidden="true">→</span>
               </Link>
             </li>
           </ul>
