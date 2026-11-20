@@ -201,6 +201,22 @@ export function ProjectBrief({ source }: { source?: string } = {}) {
             </label>
           </div>
           <label>
+            How did you hear about StemAGH? <span className="optional">(optional)</span>
+            <select name="discovery" defaultValue="">
+              <option value="">Select if you like</option>
+              {[
+                'Google Search',
+                'GitHub',
+                'Referral',
+                'Social media',
+                'Advertisement',
+                'Other',
+              ].map((channel) => (
+                <option key={channel}>{channel}</option>
+              ))}
+            </select>
+          </label>
+          <label>
             What would you like to achieve?
             <textarea
               name="brief"

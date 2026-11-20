@@ -47,6 +47,11 @@ export default function WorkPage() {
           </p>
         </div>
         <AppDemo heading="h2" />
+        <p className="mt-8">
+          <Link className="underline" href="/insights/stemagh-website-redesign">
+            Case study: redesigning our website enquiry journey
+          </Link>
+        </p>
       </section>
 
       <section className="work-section" aria-labelledby="built-title">

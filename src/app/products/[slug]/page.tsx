@@ -187,6 +187,11 @@ export default async function ProductPage({ params }: Props) {
               Switch between screens. Interface illustration with sample data.
             </p>
             <OpenEstateShowcase />
+            <p className="mt-6">
+              <TextLink href="/insights/real-estate-crm-evaluation-checklist">
+                Test a sample lead, booking and receipt with the CRM evaluation checklist
+              </TextLink>
+            </p>
           </Container>
         </section>
       )}
